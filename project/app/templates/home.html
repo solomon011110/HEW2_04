@@ -1,0 +1,11 @@
+{% extends "layout.html" %}
+
+{% block title %}ホーム{% endblock %}
+
+{% block content %}
+<h1>ホーム</h1>
+<p>ようこそ！</p>
+{% for item in items %}
+            <li>{{ item['name'] }} - {{ item['description'] }}</li>
+{% endfor %}
+{% endblock %}

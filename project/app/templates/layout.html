@@ -1,20 +1,19 @@
-<!doctype html>
-<html lang="en">
+<!DOCTYPE html>
+<html lang="ja">
 <head>
-  <meta charset="utf-8">
-  <title>フードロス削減サイト</title>
-  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <meta charset="UTF-8">
+    <title>{% block title %}My Site{% endblock %}</title>
 </head>
 <body>
-  <header>
     <nav>
-      <a href="{{ url_for('auth.login') }}">ログイン</a>
-      <a href="{{ url_for('auth.register') }}">登録</a>
-      <a href="{{ url_for('project.projects') }}">プロジェクト一覧</a>
+        <ul>
+            <li><a href="{{ url_for('main.index') }}">ホーム</a></li>
+            <li><a href="{{ url_for('main.register') }}">登録</a></li>
+            <li><a href="{{ url_for('main.login') }}">ログイン</a></li>
+            <li><a href="{{ url_for('main.ichi') }}">1</a></li>
+        
+        </ul>
     </nav>
-  </header>
-  <main>
     {% block content %}{% endblock %}
-  </main>
 </body>
 </html>
