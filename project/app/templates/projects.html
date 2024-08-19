@@ -1,0 +1,11 @@
+{% extends "layout.html" %}
+
+{% block title %}登録{% endblock %}
+
+{% block content %}
+<h1>project一覧</h1>
+<div class="container">
+    {% for item in items %}
+    <li>{{ item['name'] }} - {{ item['description'] }}</li>
+    {% endfor %}
+{% endblock %}
