@@ -2,18 +2,13 @@
 <html lang="ja">
 <head>
     <meta charset="UTF-8">
+    <link rel="stylesheet" href="/static/css/reset-min.css">
+    <link rel="stylesheet" href="/static/css/style.css">
     <title>{% block title %}My Site{% endblock %}</title>
 </head>
 <body>
-    <nav>
-        <ul>
-            <li><a href="{{ url_for('main.index') }}">ホーム</a></li>
-            <li><a href="{{ url_for('main.register') }}">登録</a></li>
-            <li><a href="{{ url_for('main.login') }}">ログイン</a></li>
-            <li><a href="{{ url_for('main.ichi') }}">1</a></li>
-        
-        </ul>
-    </nav>
+    {% block hed %}{% endblock %}
     {% block content %}{% endblock %}
+    
 </body>
 </html>

@@ -1,0 +1,97 @@
+@charset "UTF-8";
+div{
+    border: 1px black solid;
+}
+.flex-box{
+	display: flex;
+}
+a{
+	color: black;
+}
+p{
+    text-align: center;
+}
+
+body{
+    width: 1440px;
+    margin: auto;
+}
+
+
+.header-wrapper{
+    height: 60px;
+    justify-content: space-between;
+    padding: 20px 100px 0;
+}
+.header-content{
+    padding: 10px 50px;
+    border: none;
+}
+.header-image{
+    height: 300px;
+}
+.ad{
+    height: 150px;
+}
+.project-box{
+    height: 300px;
+}
+.title{
+    padding: 20px 100px;
+    border: none;
+    justify-content: space-between;
+}
+.project{
+    border: none;
+    padding: 10px 150px;
+    justify-content: space-between;
+}
+.project-content{
+    padding: 80px 80px;
+    background:repeating-linear-gradient(
+    -45deg,
+    #ccc,
+    #ccc 1px,
+    #fff 0,
+    #fff 29px
+    );
+}
+.tag-box{
+    display: flex;
+    flex-wrap: wrap;
+    border: none;
+    padding: 20px 100px;
+}
+.tag-content{
+    padding: 10px 80px;
+    margin: 0 20px 30px
+}
+.whatis{
+    height: 180px;
+    background-color: #e73650;
+}
+.whatis p{
+    color: white;
+}
+.recruitment{
+    height: 180px;
+    background-color: #e7f0fd;
+}
+.interview-content{
+    padding: 80px 120px;
+    background:repeating-linear-gradient(
+        -45deg,
+        #ccc,
+        #ccc 1px,
+        #fff 0,
+        #fff 29px
+        );
+}
+footer{
+    height: 300px;
+    border: 1px black solid;
+    background-color: #383d43;
+}
+footer p{
+    color: white;
+}

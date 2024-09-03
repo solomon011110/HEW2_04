@@ -3,7 +3,127 @@
 {% block title %}ホーム{% endblock %}
 
 {% block content %}
-<h1>ホーム</h1>
-<p>ようこそ！</p>
+{% include "hed.html" %}
+<body>
+    <div class="ad"><p>ad</p></div>
+    <main>
+      <div class="project-box">
+        <div class="flex-box title">
+          <p>最近見たプロジェクト</p>
+          <p><a href="">もっと見る></a></p>
+        </div>
+        <div class="flex-box project">
+          <a href=""><div class="project-content"><p>project</p></div></a>
+          <a href=""><div class="project-content"><p>project</p></div></a>
+          <a href=""><div class="project-content"><p>project</p></div></a>
+          <a href=""><div class="project-content"><p>project</p></div></a>
+        </div>
+      </div>
+      <div class="project-box">
+        <div class="flex-box title">
+          <p>注目されているタグ</p>
+          <p><a href="">もっと見る></a></p>
+        </div>
+        <div class="tag-box">
+          <a href=""><div class="tag-content"><p>#tag</p></div></a>
+          <a href=""><div class="tag-content"><p>#tag</p></div></a>
+          <a href=""><div class="tag-content"><p>#tag</p></div></a>
+          <a href=""><div class="tag-content"><p>#tag</p></div></a>
+          <a href=""><div class="tag-content"><p>#tag</p></div></a>
+          <a href=""><div class="tag-content"><p>#tag</p></div></a>
+          <a href=""><div class="tag-content"><p>#tag</p></div></a>
+          <a href=""><div class="tag-content"><p>#tag</p></div></a>
+          <a href=""><div class="tag-content"><p>#tag</p></div></a>
+          <a href=""><div class="tag-content"><p>#tag</p></div></a>
+        </div>
+      </div>
+      <div class="project-box">
+        <div class="flex-box title">
+          <p>注目のプロジェクト</p>
+          <p><a href="">もっと見る></a></p>
+        </div>
+        <div class="flex-box project">
+          <a href=""><div class="project-content"><p>project</p></div></a>
+          <a href=""><div class="project-content"><p>project</p></div></a>
+          <a href=""><div class="project-content"><p>project</p></div></a>
+          <a href=""><div class="project-content"><p>project</p></div></a>
+        </div>
+      </div>
+      <div class="project-box">
+        <div class="flex-box title">
+          <p>あと一押しのプロジェクト</p>
+          <p><a href="">もっと見る></a></p>
+        </div>
+        <div class="flex-box project">
+          <a href=""><div class="project-content"><p>project</p></div></a>
+          <a href=""><div class="project-content"><p>project</p></div></a>
+          <a href=""><div class="project-content"><p>project</p></div></a>
+          <a href=""><div class="project-content"><p>project</p></div></a>
+        </div>
+      </div>
+      <div class="project-box">
+        <div class="flex-box title">
+          <p>支援金額の多いプロジェクト</p>
+          <p><a href="">もっと見る></a></p>
+        </div>
+        <div class="flex-box project">
+          <a href=""><div class="project-content"><p>project</p></div></a>
+          <a href=""><div class="project-content"><p>project</p></div></a>
+          <a href=""><div class="project-content"><p>project</p></div></a>
+          <a href=""><div class="project-content"><p>project</p></div></a>
+        </div>
+      </div>
+      <div class="project-box">
+        <div class="flex-box title">
+          <p>新規のプロジェクト</p>
+          <p><a href="">もっと見る></a></p>
+        </div>
+        <div class="flex-box project">
+          <a href=""><div class="project-content"><p>project</p></div></a>
+          <a href=""><div class="project-content"><p>project</p></div></a>
+          <a href=""><div class="project-content"><p>project</p></div></a>
+          <a href=""><div class="project-content"><p>project</p></div></a>
+        </div>
+      </div>
+      <div class="whatis"><p>what is crowdfunding</p></div>
+      <div class="project-box">
+        <div class="flex-box title">
+          <p>現在募集中のプロジェクト</p>
+          <p><a href="">もっと見る></a></p>
+        </div>
+        <div class="flex-box project">
+          <a href=""><div class="project-content"><p>project</p></div></a>
+          <a href=""><div class="project-content"><p>project</p></div></a>
+          <a href=""><div class="project-content"><p>project</p></div></a>
+          <a href=""><div class="project-content"><p>project</p></div></a>
+        </div>
+      </div>
+      <div class="recruitment"><p>supporter recruitment</p></div>
+      <div class="project-box">
+        <div class="flex-box title">
+          <p>継続寄付のプロジェクト</p>
+          <p><a href="">もっと見る></a></p>
+        </div>
+        <div class="flex-box project">
+          <a href=""><div class="project-content"><p>project</p></div></a>
+          <a href=""><div class="project-content"><p>project</p></div></a>
+          <a href=""><div class="project-content"><p>project</p></div></a>
+          <a href=""><div class="project-content"><p>project</p></div></a>
+        </div>
+      </div>
+      <div class="project-box">
+        <div class="flex-box title">
+          <p>クラウドファンディング実行者インタビュー</p>
+          <p><a href="">もっと見る></a></p>
+        </div>
+        <div class="flex-box project">
+          <a href=""><div class="interview-content"><p>interview</p></div></a>
+          <a href=""><div class="interview-content"><p>interview</p></div></a>
+          <a href=""><div class="interview-content"><p>interview</p></div></a>
+        </div>
+      </div>
+    </main>
+    {% include "foot.html" %}
+</body>
 
 {% endblock %}
