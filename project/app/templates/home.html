@@ -1,6 +1,12 @@
 {% extends "layout.html" %}
 
 {% block title %}ホーム{% endblock %}
+<head>
+  <meta charset="UTF-8">
+  <link rel="stylesheet" href="../static/css/reset-min.css">
+  <link rel="stylesheet" href="../static/css/style.css">
+  <title>{% block title %}My Site{% endblock %}</title>
+</head>
 
 {% block content %}
 {% include "hed.html" %}
@@ -43,10 +49,10 @@
           <p><a href="">もっと見る></a></p>
         </div>
         <div class="flex-box project">
-          <a href=""><div class="project-content"><p>project</p></div></a>
-          <a href=""><div class="project-content"><p>project</p></div></a>
-          <a href=""><div class="project-content"><p>project</p></div></a>
-          <a href=""><div class="project-content"><p>project</p></div></a>
+          <a href=""><div class="project-content"><img src="img/apple.jpg"></img></div></a>
+          <a href=""><div class="project-content"><img src="img/asupara.jpg"></img></div></a>
+          <a href=""><div class="project-content"><img src="img/iwashi.jpg"></img></div></a>
+          <a href=""><div class="project-content"><img src="img/banana.jpg"></img></div></a>
         </div>
       </div>
       <div class="project-box">
