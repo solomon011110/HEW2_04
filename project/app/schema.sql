@@ -7,5 +7,5 @@ CREATE TABLE IF NOT EXISTS T_item (
     F_id TEXT PRIMARY KEY AUTOINCREMENT,
     F_name TEXT NOT NULL,
     F_description TEXT,
-    F_imgPass TEXT,
+    F_imgPass TEXT
 );
