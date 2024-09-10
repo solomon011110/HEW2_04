@@ -47,7 +47,8 @@ body{
     justify-content: space-between;
 }
 .project-content{
-    padding: 80px 80px;
+    width: 240px;
+    padding-bottom: 20px;
     background:repeating-linear-gradient(
     -45deg,
     #ccc,
@@ -55,6 +56,11 @@ body{
     #fff 0,
     #fff 29px
     );
+}
+.project-content img{
+    width: 240px;
+    height: 140px;
+    object-fit: cover;
 }
 .tag-box{
     display: flex;
