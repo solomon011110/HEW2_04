@@ -2,12 +2,12 @@ import sqlite3
 
 # TEST.dbを作成する
 # すでに存在していれば、それにアスセスする。
-dbname = 'mydatabase.db'
+dbname = 'TEST.db'
 conn = sqlite3.connect(dbname)
 cur = conn.cursor()
 
 cur.execute("""\
-CREATE TABLE IF NOT EXISTS T_users (
+CREATE TABLE T_users (
     F_id TEXT PRIMARY KEY,
     F_username TEXT NOT NULL,
     F_email TEXT NOT NULL
@@ -16,7 +16,7 @@ CREATE TABLE IF NOT EXISTS T_users (
 conn.commit()
 
 cur.execute("""\
-    CREATE TABLE IF NOT EXISTS T_item (
+    CREATE TABLE T_item (
     F_id TEXT PRIMARY KEY,
     F_name TEXT NOT NULL,
     F_description TEXT,
