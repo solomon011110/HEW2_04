@@ -7,8 +7,8 @@
     <title>{% block title %}My Site{% endblock %}</title>
 </head>
 <body>
-    {% block hed %}{% endblock %}
+    {% include "hed.html" %}
     {% block content %}{% endblock %}
-    
+    {% include "foot.html" %}
 </body>
 </html>

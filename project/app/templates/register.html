@@ -1,50 +1,58 @@
 {% extends "layout.html" %}
-
-{% block title %}登録{% endblock %}
-
 {% block content %}
-<h1>登録</h1>
-<p>ユーザー登録ページです。</p>
-<form method="post" action="test.html">
-    <table >
-    <tr>
-    <th>名前</th>
-    <th><input type="text" maxlength="100" placeholder="山田太郎" id="name">
-    </tr>
-    <tr>
-    <th>名前(ふりがな)</th>
-    <th><input type="text" maxlength="200" placeholder="やまだたろう" id="name_huri"></th>
-    </tr>
-    <tr>
-    <th>メールアドレス</th>
-    <th><input type="text" maxlength="254" placeholder="aaaa@gmail.com" id="mail"></th>
-    </tr>
-    <tr>
-    <th>パスワード</th>
-    <th><input type="password" maxlength="20" placeholder="半角英数8文字以上" id="pass"></th>
-    </tr>
-    <tr>
-    <th>パスワード再入力</th>
-    <th><input type="password" maxlength="20" placeholder="半角英数8文字以上" id="repass"></th>
-    </tr>
-    <tr>
-    <th>郵便番号</th>
-    <th><input type="text" maxlength="7" placeholder="ハイフンなし" id="yuubin"></th>
-    </tr>
-    <tr>
-    <th>住所</th>
-    <th><input type="text" maxlength="200" id="address"></th>
-    </tr>
-    <tr>
-    <th>電話番号</th>
-    <th><input type="text" maxlength="21" placeholder="ハイフンなし" id="phone"></th>
-    </tr>
-    <tr>
-    <th>生年月日</th>
-    <th><input type="date" name="calendar" max="9999-12-31" id="birth"></th>
-    </tr>
-    </table>
-    <br/>
-    <input type="submit" value="会員登録を行う" id="touroku">
-    </form>
+<h1>Register</h1>
+<!-- フォームを作成 -->
+<form action="" method="post">
+ 
+  <p>
+    <!-- usernameのフィールド -->
+    <!-- usernameフィールドのラベルを表示 -->
+    {{ form.username.label }}<br>
+    <!-- usernameの入力エリアを表示 -->
+    {{ form.username(size=32) }}<br>
+    <!-- usernameフィールドでエラーが発生した場合の処理 -->
+    {% for error in form.username.errors %}
+    <!-- 赤文字でエラーメッセージを表示 -->
+    <span style="color: red;">[{{ error }}]</span>
+    {% endfor %}
+  </p>
+  <p>
+    <!-- emailのフィールド -->
+    <!-- emailフィールドのラベルを表示 -->
+    {{ form.email.label }}<br>
+    <!-- emailの入力エリアを表示 -->
+    {{ form.email(size=64) }}<br>
+    <!-- emailフィールドでエラーが発生した場合の処理 -->
+    {% for error in form.email.errors %}
+    <!-- 赤文字でエラーメッセージを表示 -->
+    <span style="color: red;">[{{ error }}]</span>
+    {% endfor %}
+  </p>
+  <p>
+    <!-- passwordのフィールド -->
+    <!-- passwordフィールドのラベルを表示 -->
+    {{ form.password.label }}<br>
+    <!-- passwordの入力エリアを表示 -->
+    {{ form.password(size=32) }}<br>
+    <!-- passwordフィールドでエラーが発生した場合の処理 -->
+    {% for error in form.password.errors %}
+    <!-- 赤文字でエラーメッセージを表示 -->
+    <span style="color: red;">[{{ error }}]</span>
+    {% endfor %}
+  </p>
+  <p>
+    <!-- password2のフィールド -->
+    <!-- password2フィールドのラベルを表示 -->
+    {{ form.password2.label }}<br>
+    <!-- password2の入力エリアを表示 -->
+    {{ form.password2(size=32) }}<br>
+    <!-- password2フィールドでエラーが発生した場合の処理 -->
+    {% for error in form.password2.errors %}
+    <!-- 赤文字でエラーメッセージを表示 -->
+    <span style="color: red;">[{{ error }}]</span>
+    {% endfor %}
+  </p>
+  <!-- 送信ボタン -->
+  <p>{{ form.submit() }}</p>
+</form>
 {% endblock %}

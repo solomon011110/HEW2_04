@@ -4,9 +4,9 @@ bp = Blueprint('main', __name__)
 
 @bp.route('/')
 def index():
-    db = get_db()
-    items = db.execute('SELECT * FROM item').fetchall()
-    return render_template('home.html', items=items)
+    
+    
+    return render_template('home.html')
 
 @bp.route('/register')
 def register():

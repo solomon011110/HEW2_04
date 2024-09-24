@@ -1,19 +1,20 @@
 from flask import Flask
+from flask_login import LoginManager
 from .database import init_db
 
 
 
-def create_app():
-    app = Flask(__name__)
-    app.config.from_object('config.Config')
+
+app = Flask(__name__)
+app.config.from_object('config.Config')
+login = LoginManager(app) 
+ 
+with app.app_context():
+    init_db()
+   
     
-    #======データベース======#
-    with app.app_context():
-        init_db()
-    #======データベース 終わり======#
     
-    # Blueprintを登録
-    from .routes import bp as main_bp
-    app.register_blueprint(main_bp)
+from .routes import bp as main_bp
+app.register_blueprint(main_bp)
     
-    return app
+
