@@ -1,20 +1,23 @@
 from flask import Flask
+from flask_sqlalchemy import SQLAlchemy
 from flask_login import LoginManager
-from .database import init_db
+from app.config import Config
+from app.models import db
 
 
 
 
-app = Flask(__name__)
-app.config.from_object('config.Config')
-login = LoginManager(app) 
- 
-with app.app_context():
-    init_db()
-   
+def create_app():
+    app = Flask(__name__)
     
+    # 設定ファイルの読み込み
+    app.config.from_object(Config)
+
+    # データベースの初期化
+    db.init_app(app)
+
+  
+    return app
     
-from .routes import bp as main_bp
-app.register_blueprint(main_bp)
-    
+
 
