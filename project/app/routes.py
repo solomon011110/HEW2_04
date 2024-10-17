@@ -1,5 +1,4 @@
 from flask import Blueprint, render_template
-from .database import get_db
 bp = Blueprint('main', __name__)
 
 @bp.route('/')
