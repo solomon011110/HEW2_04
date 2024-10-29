@@ -1,5 +1,4 @@
 from flask import Flask, redirect, render_template, request
-
 from flask_login import LoginManager
 from werkzeug.security import generate_password_hash
 from app.config import Config
