@@ -1,4 +1,9 @@
-from flask import Blueprint, render_template
+from flask import Flask, Blueprint, redirect, render_template, request
+from werkzeug.security import generate_password_hash
+from app.models import db, User
+from flask_login import LoginManager, UserMixin, login_user, logout_user, login_required
+from werkzeug.security import generate_password_hash, check_password_hash
+
 bp = Blueprint('main', __name__)
 
 @bp.route('/')
@@ -10,10 +15,6 @@ def index():
 @bp.route('/register')
 def register():
     return render_template('register.html')
-
-@bp.route('/login')
-def login():
-    return render_template('login.html')
 
 @bp.route('/profile')
 def profile():
@@ -46,3 +47,37 @@ def terms():
 @bp.route('/ichi')
 def ichi():
     return render_template('1.html')
+
+@bp.route('/signup', methods=['GET', 'POST'])
+def signup():
+    if request.method == "POST":
+        username = request.form.get('username')
+        password = request.form.get('password')
+        # Userのインスタンスを作成
+        user = User(username=username, password=generate_password_hash(password, method='pbkdf2:sha256'))
+        db.session.add(user)
+        db.session.commit()
+        return redirect('login')
+    else:
+        return render_template('signup.html')
+  
+@bp.route('/login', methods=['GET', 'POST'])
+def login():
+    if request.method == "POST":
+        username = request.form.get('username')
+        password = request.form.get('password')
+        # Userテーブルからusernameに一致するユーザを取得
+        user = User.query.filter_by(username=username).first()
+        if check_password_hash(user.password, password):
+            login_user(user)
+            return redirect('/tweets')
+        else:
+            return render_template('/login')
+    else:
+        return render_template('login.html')
+    
+@bp.route('/logout')
+@login_required
+def logout():
+    logout_user()
+    return redirect('login')
