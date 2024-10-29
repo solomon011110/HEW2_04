@@ -1,16 +1,44 @@
-{% extends "layout.html" %}
-
-{% block title %}登録{% endblock %}
-
-{% block content %}
-<h1>ログイン</h1>
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=], initial-scale=1.0">
+  <link rel="stylesheet" href="../static/css/reset-min.css">
+  <link rel="stylesheet" href="../static/css/login.css">
+  <title>登録</title>
+</head>
+<body>
+<header>
+  <a href="/"><img src="../static/img/apple.jpg" alt=""></a>
+</header>
 <div class="container">
     <form>
-      <p class="fsize">ログイン画面</p>
-      <input type="text" placeholder="Username" />
-      <input type="password" placeholder="Password" />
-      <button type="submit">ログイン</button>
+      <h1 class="fsize">ログイン</h1>
+      <div class="content">
+        <div class="input_box">
+          <div class="input">
+            <p>ユーザーネーム</p>
+            <input type="text" placeholder="Username">
+          </div>
+          <div class="input">
+            <p>パスワード</p>
+            <input type="password" placeholder="Password">            
+          </div>
+
+        <div class="login">
+          <input type="submit" value = "ログイン">
+        </div>
+        </div>
+      </div>
+      
     </form>
+    <div class="register">
+      <a href="register">新規登録　></a>  
+    </div>
   </div>
-  <a href="register">新規登録</a>
-{% endblock %}
+  <footer>
+    <p>footer</p>
+  </footer>
+</body>
+</html>
+

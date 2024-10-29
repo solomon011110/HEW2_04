@@ -1,0 +1,101 @@
+@media screen and (max-width:374px){
+  
+}
+
+html{
+  height: 100%;
+}
+
+body {
+  display: flex;
+  height: 100%;
+  flex-flow: column;
+}
+
+header {
+  text-align: center;
+}
+
+header img{
+  width: 150px;
+  margin: 10px 0;
+}
+
+body div.container{
+  border: 1px black solid;
+  border-radius: 20px;
+  padding: 20px 0;
+  width: 400px;
+  margin: 0  auto;
+  margin-bottom: 20px;
+}
+
+.input_box { 
+  width: 373px;
+  margin: 0 auto;
+}
+
+.input input{
+  padding: 10px;
+  line-height: 1;
+  width: 350px;
+  margin-bottom: 20px;
+}
+
+.input p{
+  font-weight: bold;
+}
+
+.login input{
+  display       : inline-block;
+  border-radius : 15px;          /* 角丸       */
+  font-size     : 15px;        /* 文字サイズ */
+  text-align    : center;      /* 文字位置   */
+  cursor        : pointer;     /* カーソル   */
+  padding       : 5px 5px;   /* 余白       */
+  background    : greenyellow;     /* 背景色     */
+  color         : #ffffff;     /* 文字色     */
+  line-height   : 30px;         /* 1行の高さ  */
+  opacity       : 1;           /* 透明度     */
+  transition    : .3s;         /* なめらか変化 */
+  width: 373px;
+  border: solid 0px greenyellow;
+  margin-bottom: 20px;
+}
+.login:hover {
+  box-shadow    : none;        /* カーソル時の影消去 */
+  opacity       : 0.8;         /* カーソル時透明度 */
+}
+
+.register {
+  display: flex;
+  justify-content: right;
+}
+
+.register a{
+  margin-right: 20px;
+  text-decoration: none;
+  color: #0073cc;
+}
+
+.register a:hover{
+  color: rgb(138, 180, 248);
+  text-decoration:underline;
+}
+
+h1.fsize{
+  font-size: 25px;
+  text-align: center;
+  margin-bottom: 20px;
+  font-weight: bold;
+}
+
+footer{
+  height: auto;
+  border: 1px black solid;
+  background-color: #383d43;
+  flex-grow: 1;
+}
+footer p{
+  color: white;
+}
