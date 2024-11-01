@@ -6,9 +6,11 @@
     <link rel="stylesheet" href="/static/css/style.css">
     <title>{% block title %}My Site{% endblock %}</title>
 </head>
+{% include "hed.html" %}
 <body>
-    {% include "hed.html" %}
+    
     {% block content %}{% endblock %}
-    {% include "foot.html" %}
+    
 </body>
+{% include "foot.html" %}
 </html>

@@ -110,20 +110,7 @@ html{
   height: 100%;
 }
 
-body {
-  display: flex;
-  height: 100%;
-  flex-flow: column;
-}
 
-header {
-  text-align: center;
-}
-
-header img{
-  width: 150px;
-  margin: 10px 0;
-}
 
 body div.container{
   border: 1px black solid;
@@ -194,12 +181,3 @@ h1.fsize{
   font-weight: bold;
 }
 
-footer{
-  height: auto;
-  border: 1px black solid;
-  background-color: #383d43;
-  flex-grow: 1;
-}
-footer p{
-  color: white;
-}
