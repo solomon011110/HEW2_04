@@ -41,12 +41,12 @@ def login():
         user = User.query.filter_by(email=email).first()
         if user and check_password_hash(user.password, password):
             login_user(user)
-            return redirect('/')  # 適切なリダイレクト先に変更
+            return redirect('/profile')  # 適切なリダイレクト先に変更
         else:
             flash('ユーザー名またはパスワードが間違っています。')
             return render_template('login.html')
     else:
-        return redirect('profile')
+        return render_template('login.html')
 
 @bp.route('/logout')
 @login_required
@@ -85,10 +85,11 @@ def verify():
         
         if input_code == stored_code:
             flash('認証に成功しました！登録が完了しました。')
+            id = session.get('id')
             email = session.get('email')
             password = session.get('password')
             # Userのインスタンスを作成
-            user = User(email=email, password=password)
+            user = User(id=id, email=email, password=password)
             db.session.add(user)
             db.session.commit()
             return redirect("login")
