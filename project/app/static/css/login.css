@@ -25,6 +25,7 @@ body div.container{
   /* padding: 10px 30px; */
   margin: 0  auto;
   margin-bottom: 20px;
+  box-sizing: border-box;
 }
 
 h1.fsize{
@@ -182,6 +183,7 @@ footer p{
     width: 300px;
     margin: 0  auto;
     margin-bottom: 20px;
+    box-sizing:border-box;
   }
 
   h1.fsize{
@@ -249,7 +251,7 @@ footer p{
   .register_line {
     display: flex;
     align-items: center;
-    width: 320px;
+    width: 300px;
     margin: 0 auto;
     margin-top: 10px;
     margin-bottom: 10px;
@@ -272,7 +274,7 @@ footer p{
   
   .register {
     margin: 0 auto;
-    width: 320px;
+    width: 300px;
   }
   
   .register a{
