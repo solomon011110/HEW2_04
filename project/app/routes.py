@@ -2,7 +2,7 @@ from flask import Flask, Blueprint, redirect, render_template, request, url_for,
 from werkzeug.security import generate_password_hash, check_password_hash
 from flask_mail import Mail, Message
 from app.models import db, User
-from flask_login import LoginManager, UserMixin, login_user, logout_user, login_required
+from flask_login import current_user, LoginManager, UserMixin, login_user, logout_user, login_required
 import random
 from app import mail
 
@@ -18,7 +18,7 @@ def index():
 @bp.route('/profile')
 @login_required
 def profile():
-    return render_template('profile.html', email = session['email'])
+    return render_template('profile.html', email=current_user.email)
 
     
 
@@ -52,7 +52,7 @@ def login():
 @login_required
 def logout():
     logout_user()
-    return redirect('login')
+    return redirect('/')
 
 @bp.route('/register', methods=['GET','POST'])
 def register():
