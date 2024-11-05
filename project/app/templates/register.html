@@ -1,6 +1,13 @@
-{% extends "layout.html" %}
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="/static/css/reset-min.css">
+    <link rel="stylesheet" href="/static/css/style.css">
+    <title>{% block title %}My Site{% endblock %}</title>
+</head>
 
-{% block title %}登録{% endblock %}
+
 {% block content %}
 <div class="container">
     <form method="post">
@@ -29,3 +36,4 @@
   
       
       {% endblock %}
+      {% include "foot.html" %}

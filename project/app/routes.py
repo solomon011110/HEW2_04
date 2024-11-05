@@ -9,7 +9,7 @@ from app import mail
 bp = Blueprint('main', __name__)
 
 def generate_verification_code():
-    return str(random.randint(100000, 999999))
+    return str(1)
 
 @bp.route('/')
 def index():
@@ -18,7 +18,9 @@ def index():
 @bp.route('/profile')
 @login_required
 def profile():
-    return render_template('profile.html')
+    return render_template('profile.html', email = session['email'])
+
+    
 
 @bp.route('/create_project')
 @login_required
@@ -30,7 +32,7 @@ def create_project():
 def project_list():
     return render_template('project_list.html')
 
-@bp.route('/login', methods=['GET', 'POST'])
+@bp.route('/login', methods=['GET','POST'])
 def login():
     if request.method == "POST":
         email = request.form.get('email')
@@ -39,12 +41,12 @@ def login():
         user = User.query.filter_by(email=email).first()
         if user and check_password_hash(user.password, password):
             login_user(user)
-            return redirect('/tweets')  # 適切なリダイレクト先に変更
+            return redirect('/')  # 適切なリダイレクト先に変更
         else:
             flash('ユーザー名またはパスワードが間違っています。')
             return render_template('login.html')
     else:
-        return render_template('login.html')
+        return redirect('profile')
 
 @bp.route('/logout')
 @login_required
@@ -52,11 +54,11 @@ def logout():
     logout_user()
     return redirect('login')
 
-@bp.route('/register', methods=['GET', 'POST'])
+@bp.route('/register', methods=['GET','POST'])
 def register():
     if request.method == 'POST':
         email = request.form['email']
-        password = request.form['password']
+        password = generate_password_hash(request.form['password'], method='pbkdf2:sha256')
         # 認証コード生成
         verification_code = generate_verification_code()
         
@@ -75,7 +77,7 @@ def register():
     
     return render_template('register.html')
 
-@bp.route('/verify', methods=['GET', 'POST'])
+@bp.route('/verify', methods=['GET','POST'])
 def verify():
     if request.method == 'POST':
         input_code = request.form['verification_code']
@@ -86,7 +88,7 @@ def verify():
             email = session.get('email')
             password = session.get('password')
             # Userのインスタンスを作成
-            user = User(email=email, password=generate_password_hash(password, method='pbkdf2:sha256'))
+            user = User(email=email, password=password)
             db.session.add(user)
             db.session.commit()
             return redirect("login")
