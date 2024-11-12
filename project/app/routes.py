@@ -3,10 +3,24 @@ from werkzeug.security import generate_password_hash, check_password_hash
 from flask_mail import Mail, Message
 from app.models import db, User
 from flask_login import current_user, LoginManager, UserMixin, login_user, logout_user, login_required
-import random
+from functools import wraps
 from app import mail
 
 bp = Blueprint('main', __name__)
+
+admin_credentials = {
+    'username': '1@1',
+    'password': '1'
+}
+
+def admin_required(f):
+    @wraps(f)
+    def decorated_function(*args, **kwargs):
+        if not session.get('admin_logged_in'):
+            flash('Please log in as an admin to access this page.')
+            return redirect(url_for('login'))
+        return f(*args, **kwargs)
+    return decorated_function
 
 def generate_verification_code():
     return str(1)
@@ -19,18 +33,7 @@ def index():
 @login_required
 def profile():
     return render_template('profile.html', email=current_user.email)
-
     
-
-@bp.route('/create_project')
-@login_required
-def create_project():
-    return render_template('create_project.html')
-
-@bp.route('/project_list')
-@login_required
-def project_list():
-    return render_template('project_list.html')
 
 @bp.route('/login', methods=['GET','POST'])
 def login():
@@ -97,3 +100,94 @@ def verify():
             flash('認証コードが正しくありません。再試行してください。')
     
     return render_template('verify.html')
+
+@bp.route('/main_market',  methods=['GET','POST'])
+def main_market():
+    return render_template('main_market')
+
+
+
+
+@bp.route('/project_info')
+@login_required
+def project_info():
+    return render_template('project_info.html')
+
+@bp.route('/create_project')
+@login_required
+def create_project():
+    return render_template('create_project.html')
+
+@bp.route('/project_list')
+@login_required
+def project_list():
+    return render_template('project_list.html')
+
+
+@bp.route('/cart')
+def cart():
+    return render_template('cart.html')
+
+
+@bp.route('/purchase')
+@login_required
+def purchase():
+    return render_template('purchase.html')
+
+
+
+@bp.route('/purchasecon')
+@login_required
+def purchasecon():
+    return render_template('purchasecon.html')
+
+
+
+
+
+
+
+
+
+
+
+
+@bp.route('/admin_login', methods=['GET', 'POST'])
+def admin_login():
+    if request.method == 'POST':
+        username = request.form['username']
+        password = request.form['password']
+        
+        # 認証チェック
+        if username == admin_credentials['username'] and password == admin_credentials['password']:
+            session['admin_logged_in'] = True  # セッションにログイン状態を保持
+            login_user(User.query.filter_by(email=username).first())
+            return redirect(url_for('main.admin_dashboard'))
+        else:
+            flash('Invalid username or password')  # 誤ったログイン情報でフラッシュメッセージ
+
+    return render_template('admin_login.html')
+
+
+
+
+@bp.route('/admin_dashboard')
+@login_required
+def admin_dashboard():
+        users = User.query.all()
+        return render_template('admin_dashboard.html', name=current_user.email, users=users)
+
+
+
+@bp.route('/delete_user/<int:user_id>', methods=['POST'])
+@login_required
+def delete_user(user_id):
+    if current_user.email != "1@1":  # 管理者のみアクセス許可
+        return "アクセス権がありません", 403
+
+    user = User.query.get(user_id)
+    if user and user_id != 3:
+        db.session.delete(user)
+        db.session.commit()
+        return redirect(url_for('main.admin_dashboard'))
+    return "ユーザーが見つかりません", 404
