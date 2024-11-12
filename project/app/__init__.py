@@ -4,8 +4,6 @@ from flask_mail import Mail
 from app.config import Config
 from app.models import db, User
 import os
-import random
-
 mail = Mail()
 
 
@@ -39,10 +37,5 @@ def create_app():
     # ルーティングの設定
     from app.routes import bp
     app.register_blueprint(bp)
-
-    # ユーザーのローディング
-    @login_manager.user_loader
-    def load_user(user_id):
-        return User.query.get(int(user_id))
 
     return app
