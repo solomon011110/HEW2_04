@@ -101,6 +101,10 @@ def verify():
     
     return render_template('verify.html')
 
+
+@bp.route('/resetpass')
+def resetpass():
+    return render_template('resetpass.html')
 @bp.route('/main_market',  methods=['GET','POST'])
 def main_market():
     return render_template('main_market')
