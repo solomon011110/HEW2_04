@@ -6,7 +6,6 @@ from app.models import db, User
 import os
 mail = Mail()
 
-
 def create_app():
     app = Flask(__name__)
 
@@ -23,6 +22,11 @@ def create_app():
     login_manager = LoginManager()
     login_manager.init_app(app)  
     login_manager.login_view = "/login"
+
+    # user_loaderを設定
+    @login_manager.user_loader
+    def load_user(user_id):
+        return User.query.get(int(user_id))
 
     # メールの設定
     app.config['MAIL_SERVER'] = 'smtp.gmail.com'
