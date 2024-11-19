@@ -8,6 +8,7 @@ import random
 
 mail = Mail()
 
+
 def create_app():
     app = Flask(__name__)
 
@@ -22,7 +23,8 @@ def create_app():
 
     # ログインの初期化
     login_manager = LoginManager()
-    login_manager.init_app(app)
+    login_manager.init_app(app)  
+    login_manager.login_view = "/login"
 
     # メールの設定
     app.config['MAIL_SERVER'] = 'smtp.gmail.com'
