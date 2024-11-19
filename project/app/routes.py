@@ -94,3 +94,8 @@ def verify():
             flash('認証コードが正しくありません。再試行してください。')
     
     return render_template('verify.html')
+
+
+@bp.route('/resetpass')
+def resetpass():
+    return render_template('resetpass.html')
