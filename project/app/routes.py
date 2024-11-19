@@ -1,7 +1,7 @@
 from flask import Flask, Blueprint, redirect, render_template, request, url_for, flash, session
 from werkzeug.security import generate_password_hash, check_password_hash
 from flask_mail import Mail, Message
-from app.models import db, User
+from app.models import db, User, Inventory
 from flask_login import current_user, LoginManager, UserMixin, login_user, logout_user, login_required
 from functools import wraps
 from app import mail
@@ -101,10 +101,21 @@ def verify():
     
     return render_template('verify.html')
 
+@bp.route('/contact', methods=['GET','POST'])
+def contact():
+    if request.method == 'POST':
+        email = request.form['email']
+        name = request.form['name']
+        text = request.form['text']
 
-@bp.route('/resetpass')
-def resetpass():
-    return render_template('resetpass.html')
+        contact = Contact(email=email, name=name, text=text)
+        db.session.add(contact)
+        db.session.commit()
+
+        flash('お問い合わせが送信されました。')
+        return redirect(url_for('home.html'))
+    return render_template('contact.html')
+
 @bp.route('/main_market',  methods=['GET','POST'])
 def main_market():
     return render_template('main_market')
@@ -178,9 +189,38 @@ def admin_login():
 @bp.route('/admin_dashboard')
 @login_required
 def admin_dashboard():
-        users = User.query.all()
-        return render_template('admin_dashboard.html', name=current_user.email, users=users)
+    # ユーザーと在庫データを取得
+    users = User.query.all()
+    inventories = Inventory.query.all()
+    return render_template('admin_dashboard.html', name=current_user.email, users=users, inventories=inventories)
 
+@bp.route('/update_inventory/<int:inventory_id>', methods=['POST'])
+@login_required
+def update_inventory(inventory_id):
+    if current_user.email != "1@1":  # 管理者のみアクセス許可
+        return "アクセス権がありません", 403
+    # 在庫数の更新
+    inventory = Inventory.query.get_or_404(inventory_id)
+    new_quantity = request.form.get('quantity', type=int)
+    if new_quantity is not None:
+        inventory.quantity = new_quantity
+        db.session.commit()
+        flash('在庫数を更新しました！', 'success')
+    else:
+        flash('更新に失敗しました。', 'danger')
+    return redirect(url_for('main.admin_dashboard'))
+
+@bp.route('/delete_inventory/<int:inventory_id>', methods=['POST'])
+@login_required
+def delete_inventory(inventory_id):
+    if current_user.email != "1@1":  # 管理者のみアクセス許可
+        return "アクセス権がありません", 403
+    # 在庫データの削除
+    inventory = Inventory.query.get_or_404(inventory_id)
+    db.session.delete(inventory)
+    db.session.commit()
+    flash('在庫データを削除しました。', 'success')
+    return redirect(url_for('main.admin_dashboard'))
 
 
 @bp.route('/delete_user/<int:user_id>', methods=['POST'])
