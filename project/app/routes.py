@@ -1,7 +1,7 @@
 from flask import Flask, Blueprint, redirect, render_template, request, url_for, flash, session
 from werkzeug.security import generate_password_hash, check_password_hash
 from flask_mail import Mail, Message
-from app.models import db, User, Inventory
+from app.models import db, User, Inventory, Contact
 from flask_login import current_user, LoginManager, UserMixin, login_user, logout_user, login_required
 from functools import wraps
 from app import mail
@@ -113,7 +113,6 @@ def contact():
         db.session.commit()
 
         flash('お問い合わせが送信されました。')
-        return redirect(url_for('home.html'))
     return render_template('contact.html')
 
 @bp.route('/main_market',  methods=['GET','POST'])
