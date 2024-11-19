@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <title>アドミンダッシュボード</title>
+    <style>
+        th { width: 180px; text-align: left; }
+        form { display: inline; }
+    </style>
+</head>
+<body>
+    <h1>登録ユーザー情報</h1>
+    <table>
+        <tr>
+            <th>ID</th>
+            <th>Email</th>
+            <th>削除</th>
+            <th>Password</th>
+        </tr>
+        {% for user in users %}
+        <tr>
+            <td>{{ user.id }}</td>
+            <td>{{ user.email }}</td>
+            <td>
+                {% if(user.email != "1@1") %}
+                <form action="{{ url_for('main.delete_user', user_id=user.id) }}" method="POST">
+                    <button type="submit">削除</button>
+                </form>
+                {% endif %}
+            </td>
+            <td>{{ user.password }}</td>
+        </tr>
+        {% endfor %}
+    </table>
+
+    <h1>在庫管理</h1>
+    <table>
+        <tr>
+            <th>在庫ID</th>
+            <th>商品名</th>
+            <th>在庫数</th>
+            <th>賞味期限</th>
+            <th>編集</th>
+        </tr>
+        {% for inventory in inventories %}
+        <tr>
+            <td>{{ inventory.id }}</td>
+            <td>{{ inventory.product.name }}</td>
+            <td>{{ inventory.quantity }}</td>
+            <td>{{ inventory.expiration_date }}</td>
+            <td>
+                <form action="{{ url_for('main.update_inventory', inventory_id=inventory.id) }}" method="POST">
+                    <input type="number" name="quantity" value="{{ inventory.quantity }}" required>
+                    <button type="submit">更新</button>
+                </form>
+                <form action="{{ url_for('main.delete_inventory', inventory_id=inventory.id) }}" method="POST">
+                    <button type="submit">削除</button>
+                </form>
+            </td>
+        </tr>
+        {% endfor %}
+    </table>
+</body>
+</html>

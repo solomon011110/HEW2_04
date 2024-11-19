@@ -4,8 +4,6 @@ from flask_mail import Mail
 from app.config import Config
 from app.models import db, User
 import os
-import random
-
 mail = Mail()
 
 def create_app():
@@ -22,7 +20,13 @@ def create_app():
 
     # ログインの初期化
     login_manager = LoginManager()
-    login_manager.init_app(app)
+    login_manager.init_app(app)  
+    login_manager.login_view = "/login"
+
+    # user_loaderを設定
+    @login_manager.user_loader
+    def load_user(user_id):
+        return User.query.get(int(user_id))
 
     # メールの設定
     app.config['MAIL_SERVER'] = 'smtp.gmail.com'
@@ -37,10 +41,5 @@ def create_app():
     # ルーティングの設定
     from app.routes import bp
     app.register_blueprint(bp)
-
-    # ユーザーのローディング
-    @login_manager.user_loader
-    def load_user(user_id):
-        return User.query.get(int(user_id))
 
     return app
