@@ -32,8 +32,36 @@
         </tr>
         {% endfor %}
     </table>
+    <h1>商品種類管理</h1>
+    <h2>商品追加</h2>
+<form action="{{ url_for('main.add_product') }}" method="POST">
+    <label for="product_name">商品名:</label>
+    <input type='text' name="product_name" required>
+    <button type="submit">追加</button>
+</form>
+<table>
+    <th>商品ID</th>
+    <th>商品名</th>
+{% for product in product %}
+<tr>
+    <td>{{ product.id }}</td>
+    <td>{{ product.name }}</td>
+</tr>
+{% endfor %}
+</table>
+
+
 
     <h1>在庫管理</h1>
+    <h2>在庫追加</h2>
+<form action="{{ url_for('main.add_inventory') }}" method="POST">
+    <label for="product_id">商品ID:</label>
+    <input type="number" name="product_id" required>
+    <label for="quantity">数量:</label>
+    <input type="number" name="quantity" required>
+    <button type="submit">追加</button>
+</form>
+
     <table>
         <tr>
             <th>在庫ID</th>
@@ -47,7 +75,7 @@
             <td>{{ inventory.id }}</td>
             <td>{{ inventory.product.name }}</td>
             <td>{{ inventory.quantity }}</td>
-            <td>{{ inventory.expiration_date }}</td>
+            
             <td>
                 <form action="{{ url_for('main.update_inventory', inventory_id=inventory.id) }}" method="POST">
                     <input type="number" name="quantity" value="{{ inventory.quantity }}" required>

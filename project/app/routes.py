@@ -1,7 +1,7 @@
 from flask import Flask, Blueprint, redirect, render_template, request, url_for, flash, session
 from werkzeug.security import generate_password_hash, check_password_hash
 from flask_mail import Mail, Message
-from app.models import db, User, Inventory, Contact
+from app.models import db, User, Inventory, Contact, Product
 from flask_login import current_user, LoginManager, UserMixin, login_user, logout_user, login_required
 from functools import wraps
 from app import mail
@@ -29,6 +29,12 @@ def generate_verification_code():
 def index():
     return render_template('home.html')
 
+@bp.route('/goods/<id>')
+def goods(id):
+    product = Product.query.get_or_404(id)
+    image_url = url_for('static', filename=f'img/product/{product.id}.jpg')
+    return render_template('goods.html', product=product, image_url=image_url)
+
 @bp.route('/profile')
 @login_required
 def profile():
@@ -47,9 +53,8 @@ def login():
             return redirect('/profile')  # 適切なリダイレクト先に変更
         else:
             flash('ユーザー名またはパスワードが間違っています。')
-            return render_template('login.html')
-    else:
-        return render_template('login.html')
+            return redirect('/login')
+    return render_template('login.html')
 
 @bp.route('/logout')
 @login_required
@@ -101,13 +106,6 @@ def verify():
     
     return render_template('verify.html')
 
-
-
-@bp.route('/faq', methods=['GET','POST'])
-def faq():
-# 要DB追加
-    return render_template('faq.html', faqs=faqs) 
-
 @bp.route('/contact', methods=['GET','POST'])
 def contact():
     if request.method == 'POST':
@@ -120,6 +118,7 @@ def contact():
         db.session.commit()
 
         flash('お問い合わせが送信されました。')
+        return redirect(url_for('home.html'))
     return render_template('contact.html')
 
 @bp.route('/main_market',  methods=['GET','POST'])
@@ -198,41 +197,14 @@ def admin_dashboard():
     # ユーザーと在庫データを取得
     users = User.query.all()
     inventories = Inventory.query.all()
-    return render_template('admin_dashboard.html', name=current_user.email, users=users, inventories=inventories)
-
-@bp.route('/update_inventory/<int:inventory_id>', methods=['POST'])
-@login_required
-def update_inventory(inventory_id):
-    if current_user.email != "1@1":  # 管理者のみアクセス許可
-        return "アクセス権がありません", 403
-    # 在庫数の更新
-    inventory = Inventory.query.get_or_404(inventory_id)
-    new_quantity = request.form.get('quantity', type=int)
-    if new_quantity is not None:
-        inventory.quantity = new_quantity
-        db.session.commit()
-        flash('在庫数を更新しました！', 'success')
-    else:
-        flash('更新に失敗しました。', 'danger')
-    return redirect(url_for('main.admin_dashboard'))
-
-@bp.route('/delete_inventory/<int:inventory_id>', methods=['POST'])
-@login_required
-def delete_inventory(inventory_id):
-    if current_user.email != "1@1":  # 管理者のみアクセス許可
-        return "アクセス権がありません", 403
-    # 在庫データの削除
-    inventory = Inventory.query.get_or_404(inventory_id)
-    db.session.delete(inventory)
-    db.session.commit()
-    flash('在庫データを削除しました。', 'success')
-    return redirect(url_for('main.admin_dashboard'))
+    product = Product.query.all()
+    return render_template('admin_dashboard.html', name=current_user.email, users=users, inventories=inventories, product=product)
 
 
 @bp.route('/delete_user/<int:user_id>', methods=['POST'])
 @login_required
 def delete_user(user_id):
-    if current_user.email != "1@1":  # 管理者のみアクセス許可
+    if current_user.email != admin_credentials["username"]:  # 管理者のみアクセス許可
         return "アクセス権がありません", 403
 
     user = User.query.get(user_id)
@@ -241,3 +213,74 @@ def delete_user(user_id):
         db.session.commit()
         return redirect(url_for('main.admin_dashboard'))
     return "ユーザーが見つかりません", 404
+
+# 商品追加
+@bp.route('/add_product', methods=['POST'])
+@login_required
+def add_product():
+    product_name = request.form.get('product_name')
+
+    # 種類を追加
+    new_product = Product(
+        name=product_name,
+    )
+    db.session.add(new_product)
+    db.session.commit()
+    flash("商品が追加されました。")
+    return redirect(url_for('main.admin_dashboard'))
+
+
+
+# 在庫追加
+@bp.route('/add_inventory', methods=['POST'])
+@login_required
+def add_inventory():
+    product_id = request.form.get('product_id')
+    quantity = request.form.get('quantity')
+    
+
+    # 商品が存在するか確認
+    product = Product.query.get(product_id)
+    if not product:
+        flash("指定された商品IDが存在しません。")
+        return redirect(url_for('main.admin_dashboard'))
+
+    # 在庫を追加
+    new_inventory = Inventory(
+        product_id=product_id,
+        quantity=quantity,
+    )
+    db.session.add(new_inventory)
+    db.session.commit()
+    flash("在庫が追加されました。")
+    return redirect(url_for('main.admin_dashboard'))
+
+# 在庫削除
+@bp.route('/delete_inventory/<int:inventory_id>', methods=['POST'])
+@login_required
+def delete_inventory(inventory_id):
+    inventory = Inventory.query.get(inventory_id)
+    if not inventory:
+        flash("指定された在庫が見つかりません。")
+        return redirect(url_for('main.admin_dashboard'))
+
+    db.session.delete(inventory)
+    db.session.commit()
+    flash("在庫が削除されました。")
+    return redirect(url_for('main.admin_dashboard'))
+
+# 在庫更新
+@bp.route('/update_inventory/<int:inventory_id>', methods=['POST'])
+@login_required
+def update_inventory(inventory_id):
+    inventory = Inventory.query.get(inventory_id)
+    if not inventory:
+        flash("指定された在庫が見つかりません。")
+        return redirect(url_for('main.admin_dashboard'))
+
+    # 新しい数量を取得して更新
+    new_quantity = request.form.get('quantity')
+    inventory.quantity = new_quantity
+    db.session.commit()
+    flash("在庫が更新されました。")
+    return redirect(url_for('main.admin_dashboard'))
