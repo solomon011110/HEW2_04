@@ -101,6 +101,13 @@ def verify():
     
     return render_template('verify.html')
 
+
+
+@bp.route('/faq', methods=['GET','POST'])
+def faq():
+# 要DB追加
+    return render_template('faq.html', faqs=faqs) 
+
 @bp.route('/contact', methods=['GET','POST'])
 def contact():
     if request.method == 'POST':

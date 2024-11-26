@@ -27,9 +27,11 @@ body{
     padding: 10px 50px;
     border: none;
 }
-.header-image{
-    height: 300px;
+
+.header-content a img{
+  width: 70px;
 }
+
 .ad{
     height: 150px;
 }
