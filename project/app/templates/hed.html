@@ -1,16 +1,41 @@
 {% block hed %}
 <header>
-  <div class="header-wrapper flex-box">
-    <div class="header-content"><img src="{{ url_for('static', filename = 'img/logo_1.png')}}" alt=""><p>SUSTELLA</p></div>
-    <div class="header-content"><p>search</p></div>
-    <div class="header-content"><p>what is</p></div>
-      {% if current_user.is_authenticated %}
+  <div class="header-left">
+    <!-- <div class="header-wrapper flex-box"> -->
+      <div class="header-content">
+        <a href="/">
+          <img src="{{ url_for('static', filename = 'img/logo_1.png')}}" alt="">
+          <h1>SUSTELLA</h1>
+        </a>
+      </div>
+      <div class="header-content">
+        <form action="#" class="search-form-3">
+          <label>
+              <input type="text" placeholder="キーワードを入力">
+          </label>
+          <button type="submit" aria-label="検索"></button>
+        </form>
+      </div>
+  </div>
+<div class="header-right">
+      <div class="header-content">
+        <p>what is</p>
+      </div>
+        {% if current_user.is_authenticated %}
+        <div class="header-content">
           <a href="{{ url_for('main.profile') }}">プロフィール</a>
+        </div>
+        <div class="header-content">
           <a href="{{ url_for('main.logout') }}">ログアウト</a>
-      {% else %}
+        </div>
+        {% else %}
+        <div class="header-content">
           <a href="{{ url_for('main.login') }}">ログイン</a>
+        </div>
+        <div class="header-content">
           <a href="{{ url_for('main.register') }}">新規登録</a>
-      {% endif %}
-  <div class="header-image"><p>img</p></div>
+        </div>
+        {% endif %}
+</div>
 </header>
 {% endblock %}

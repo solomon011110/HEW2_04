@@ -156,6 +156,10 @@ def purchase():
 def purchasecon():
     return render_template('purchasecon.html')
 
+@bp.route('/resetpass')
+def resetpass():
+    return render_template('resetpass.html')
+
 
 
 
