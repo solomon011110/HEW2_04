@@ -229,6 +229,22 @@ def add_product():
     flash("商品が追加されました。")
     return redirect(url_for('main.admin_dashboard'))
 
+# 商品更新
+@bp.route('/update_product/<int:product_id>', methods=['POST'])
+@login_required
+def update_product(product_id):
+    product = Product.query.get(product_id)
+    if not product:
+        flash("指定された商品が見つかりません。")
+        return redirect(url_for('main.admin_dashboard'))
+
+    # 新しい数量を取得して更新
+    new_product_name = request.form.get('new_product_name')
+    product.name = new_product_name
+    db.session.commit()
+    flash("商品が更新されました。")
+    return redirect(url_for('main.admin_dashboard'))
+
 
 
 # 在庫追加
