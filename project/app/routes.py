@@ -13,14 +13,7 @@ admin_credentials = {
     'password': '1'
 }
 
-def admin_required(f):
-    @wraps(f)
-    def decorated_function(*args, **kwargs):
-        if not session.get('admin_logged_in'):
-            flash('Please log in as an admin to access this page.')
-            return redirect(url_for('login'))
-        return f(*args, **kwargs)
-    return decorated_function
+
 
 def generate_verification_code():
     return str(1)
@@ -35,10 +28,7 @@ def goods(id):
     image_url = url_for('static', filename=f'img/product/{product.id}.jpg')
     return render_template('goods.html', product=product, image_url=image_url)
 
-@bp.route('/profile')
-@login_required
-def profile():
-    return render_template('profile.html', email=current_user.email)
+
     
 
 @bp.route('/login', methods=['GET','POST'])
@@ -50,7 +40,7 @@ def login():
         user = User.query.filter_by(email=email).first()
         if user and check_password_hash(user.password, password):
             login_user(user)
-            return redirect('/profile')  # 適切なリダイレクト先に変更
+            return redirect('/profile')  
         else:
             flash('ユーザー名またはパスワードが間違っています。')
             return redirect('/login')
@@ -106,7 +96,11 @@ def verify():
     
     return render_template('verify.html')
 
-
+@bp.route('/profile')
+@login_required
+def profile():
+    return render_template('profile.html', email=current_user.email)
+#一般アカウント----------------------------------------------
 
 @bp.route('/faq', methods=['GET','POST'])
 def faq():
@@ -176,8 +170,15 @@ def purchasecon():
 
 
 
-
-
+#admin--------------------------------------------------------------
+def admin_required(f):
+    @wraps(f)
+    def decorated_function(*args, **kwargs):
+        if not session.get('admin_logged_in'):
+            flash('Please log in as an admin to access this page.')
+            return redirect(url_for('login'))
+        return f(*args, **kwargs)
+    return decorated_function
 
 @bp.route('/admin_login', methods=['GET', 'POST'])
 def admin_login():
@@ -195,11 +196,15 @@ def admin_login():
 
     return render_template('admin_login.html')
 
+@bp.route('/admin_logout', methods=['GET', 'POST'])
+@admin_required
+def admin_logout():
+    session['admin_logged_in'] = False  
 
 
 
 @bp.route('/admin_dashboard')
-@login_required
+@admin_required
 def admin_dashboard():
     # ユーザーと在庫データを取得
     users = User.query.all()
@@ -208,8 +213,9 @@ def admin_dashboard():
     return render_template('admin_dashboard.html', name=current_user.email, users=users, inventories=inventories, product=product)
 
 
+
 @bp.route('/delete_user/<int:user_id>', methods=['POST'])
-@login_required
+@admin_required
 def delete_user(user_id):
     if current_user.email != admin_credentials["username"]:  # 管理者のみアクセス許可
         return "アクセス権がありません", 403
@@ -221,9 +227,11 @@ def delete_user(user_id):
         return redirect(url_for('main.admin_dashboard'))
     return "ユーザーが見つかりません", 404
 
+
+
 # 商品追加
 @bp.route('/add_product', methods=['POST'])
-@login_required
+@admin_required
 def add_product():
     product_name = request.form.get('product_name')
 
@@ -236,9 +244,11 @@ def add_product():
     flash("商品が追加されました。")
     return redirect(url_for('main.admin_dashboard'))
 
+
+
 # 商品更新
 @bp.route('/update_product/<int:product_id>', methods=['POST'])
-@login_required
+@admin_required
 def update_product(product_id):
     product = Product.query.get(product_id)
     if not product:
@@ -256,12 +266,11 @@ def update_product(product_id):
 
 # 在庫追加
 @bp.route('/add_inventory', methods=['POST'])
-@login_required
+@admin_required
 def add_inventory():
     product_id = request.form.get('product_id')
     quantity = request.form.get('quantity')
     
-
     # 商品が存在するか確認
     product = Product.query.get(product_id)
     if not product:
@@ -271,16 +280,18 @@ def add_inventory():
     # 在庫を追加
     new_inventory = Inventory(
         product_id=product_id,
-        quantity=quantity,
-    )
+        quantity=quantity,)
+    
     db.session.add(new_inventory)
     db.session.commit()
     flash("在庫が追加されました。")
     return redirect(url_for('main.admin_dashboard'))
 
+
+
 # 在庫削除
 @bp.route('/delete_inventory/<int:inventory_id>', methods=['POST'])
-@login_required
+@admin_required
 def delete_inventory(inventory_id):
     inventory = Inventory.query.get(inventory_id)
     if not inventory:
@@ -292,9 +303,11 @@ def delete_inventory(inventory_id):
     flash("在庫が削除されました。")
     return redirect(url_for('main.admin_dashboard'))
 
+
+
 # 在庫更新
 @bp.route('/update_inventory/<int:inventory_id>', methods=['POST'])
-@login_required
+@admin_required
 def update_inventory(inventory_id):
     inventory = Inventory.query.get(inventory_id)
     if not inventory:
@@ -307,3 +320,4 @@ def update_inventory(inventory_id):
     db.session.commit()
     flash("在庫が更新されました。")
     return redirect(url_for('main.admin_dashboard'))
+#--------------------------------------------------------------admin
