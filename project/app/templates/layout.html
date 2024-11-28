@@ -4,11 +4,14 @@
     <meta charset="UTF-8">
     <link rel="stylesheet" href="/static/css/reset-min.css">
     <link rel="stylesheet" href="/static/css/style.css">
+    {% block script %}<script></script>{% endblock %}
     <title>{% block title %}My Site{% endblock %}</title>
 </head>
+{% include "hed.html" %}
 <body>
-    {% include "hed.html" %}
+    
     {% block content %}{% endblock %}
-    {% include "foot.html" %}
+    
 </body>
+{% include "foot.html" %}
 </html>

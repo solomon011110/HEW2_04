@@ -1,0 +1,29 @@
+{% extends "layout.html" %}
+
+{% block title %}お問い合わせ - クロネコヤマト{% endblock %}
+
+
+{% block content %}
+<body>
+    <div class="section">
+        <h2>よくある質問</h2>
+        {% if faqs %}
+            <ul>
+                {% for faq in faqs %}
+                <li>
+                    <strong>{{ faq.question }}</strong><br>
+                    <p>{{ faq.answer }}</p>
+                    {% if faq.link %}
+                        <a class="link" href="{{ faq.link }}">詳しくはこちら</a>
+                    {% endif %}
+                </li>
+                {% endfor %}
+            </ul>
+        {% else %}
+            <p>現在、よくある質問はありません。</p>
+        {% endif %}
+    </div>
+
+</body>         
+
+{% endblock %}
