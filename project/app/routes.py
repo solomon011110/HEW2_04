@@ -22,12 +22,59 @@ def generate_verification_code():
 def index():
     return render_template('home.html')
 
+# 商品----------------------------------------------
+
 
 @bp.route('/goods/<id>')
 def goods(id):
     product = Product.query.get_or_404(id)
     image_url = url_for('static', filename=f'img/product/{product.id}.jpg')
     return render_template('goods.html', product=product, image_url=image_url)
+
+
+@bp.route('/add_to_cart/<int:product_id>', methods=['POST'])
+def add_to_cart(product_id):
+    quantity = int(request.form.get('quantity', 1))  # カートに追加する数量を取得
+    product = Product.query.get_or_404(product_id)  # 商品をデータベースから取得
+
+    # セッション内のカートを取得
+    cart = session.get('cart', {})
+
+    # カートに商品を追加
+    if product_id in cart:
+        cart[product_id]['quantity'] += quantity  # すでにカートに商品があれば数量を増やす
+    else:
+        cart[product_id] = {'name': product.name,
+                            'price': product.price, 'quantity': quantity}  # 商品を新規追加
+
+    session['cart'] = cart  # セッションにカート情報を保存
+    flash(f"{product.name} をカートに追加しました。")
+
+    return redirect(url_for('main.cart'))
+
+
+@bp.route('/cart')
+def cart():
+    cart = session.get('cart', {})
+    total = sum(item['price'] * item['quantity']
+                for item in cart.values())  # カート内の商品合計金額
+    return render_template('cart.html', cart=cart, total=total)
+
+
+@bp.route('/remove_from_cart/<int:product_id>')
+def remove_from_cart(product_id):
+    cart = session.get('cart', {})
+    if product_id in cart:
+        del cart[product_id]  # カートから商品を削除
+        session['cart'] = cart
+        flash('商品をカートから削除しました。')
+    return redirect(url_for('main.cart'))
+
+
+# ----------------------------------------------商品
+
+
+# 一般アカウント----------------------------------------------
 
 
 @bp.route('/login', methods=['GET', 'POST'])
@@ -105,7 +152,7 @@ def verify():
 @login_required
 def profile():
     return render_template('profile.html', email=current_user.email)
-# 一般アカウント----------------------------------------------
+# ----------------------------------------------一般アカウント
 
 
 @bp.route('/faq', methods=['GET', 'POST'])
@@ -128,46 +175,6 @@ def contact():
         flash('お問い合わせが送信されました。')
         return redirect(url_for('home.html'))
     return render_template('contact.html')
-
-
-@bp.route('/main_market',  methods=['GET', 'POST'])
-def main_market():
-    return render_template('main_market')
-
-
-@bp.route('/project_info')
-@login_required
-def project_info():
-    return render_template('project_info.html')
-
-
-@bp.route('/create_project')
-@login_required
-def create_project():
-    return render_template('create_project.html')
-
-
-@bp.route('/project_list')
-@login_required
-def project_list():
-    return render_template('project_list.html')
-
-
-@bp.route('/cart')
-def cart():
-    return render_template('cart.html')
-
-
-@bp.route('/purchase')
-@login_required
-def purchase():
-    return render_template('purchase.html')
-
-
-@bp.route('/purchasecon')
-@login_required
-def purchasecon():
-    return render_template('purchasecon.html')
 
 
 # admin--------------------------------------------------------------

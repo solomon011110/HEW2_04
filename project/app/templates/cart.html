@@ -1,0 +1,28 @@
+<h1>カート</h1>
+{% if products %}
+<table>
+  <thead>
+    <tr>
+      <th>商品名</th>
+      <th>価格</th>
+      <th>数量</th>
+      <th>小計</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for product in products %}
+    <tr>
+      <td>{{ product.name }}</td>
+      <td>¥{{ product.price }}</td>
+      <td>{{ product.quantity }}</td>
+      <td>¥{{ product.total }}</td>
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>
+<p><strong>合計金額:</strong> ¥{{ total_price }}</p>
+<a href="/purchase" class="btn btn-primary">購入手続きへ</a>
+{% else %}
+<p>カートに商品がありません。</p>
+{% endif %}
+<a href="/" class="btn btn-secondary">戻る</a>
