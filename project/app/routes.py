@@ -22,11 +22,11 @@ def generate_verification_code():
 def index():
     return render_template('home.html')
 
-@bp.route('/goods/<id>')
-def goods(id):
+@bp.route('/store/<id>')
+def store(id):
     product = Product.query.get_or_404(id)
     image_url = url_for('static', filename=f'img/product/{product.id}.jpg')
-    return render_template('goods.html', product=product, image_url=image_url)
+    return render_template('store.html', product=product, image_url=image_url)
 
 
     
