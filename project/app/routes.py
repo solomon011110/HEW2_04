@@ -1,7 +1,7 @@
 from flask import Flask, Blueprint, redirect, render_template, request, url_for, flash, session
 from werkzeug.security import generate_password_hash, check_password_hash
 from flask_mail import Mail, Message
-from app.models import db, User, Inventory, Contact, Product
+from app.models import db, User, Inventory, Contact, Product, Sale
 from flask_login import current_user, LoginManager, UserMixin, login_user, logout_user, login_required
 from functools import wraps
 from app import mail
@@ -24,14 +24,11 @@ def index():
 
 # 商品----------------------------------------------
 
-
-@bp.route('/goods/<id>')
-def goods(id):
+@bp.route('/store/<int:id>')
+def store(id):
     product = Product.query.get_or_404(id)
     image_url = url_for('static', filename=f'img/product/{product.id}.jpg')
     return render_template('store.html', product=product, image_url=image_url)
-
-
 @bp.route('/add_to_cart/<int:product_id>', methods=['POST'])
 def add_to_cart(product_id):
     quantity = int(request.form.get('quantity', 1))  # カートに追加する数量を取得
@@ -41,31 +38,96 @@ def add_to_cart(product_id):
     cart = session.get('cart', {})
 
     # カートに商品を追加
-    if product_id in cart:
-        cart[product_id]['quantity'] += quantity  # すでにカートに商品があれば数量を増やす
+    product_id_str = str(product_id)  # 商品IDを文字列として統一
+    if product_id_str in cart:
+        cart[product_id_str]['quantity'] += quantity  # すでにカートに商品があれば数量を増やす
     else:
-        cart[product_id] = {'name': product.name,
-                            'price': product.price, 'quantity': quantity}  # 商品を新規追加
+        cart[product_id_str] = {
+            'product_id': product_id,
+            'name': product.name,
+            'price': float(product.sale_price),
+            'quantity': quantity
+        }  # 商品を新規追加
 
     session['cart'] = cart  # セッションにカート情報を保存
     flash(f"{product.name} をカートに追加しました。")
-
     return redirect(url_for('main.cart'))
+
+
 
 
 @bp.route('/cart')
 def cart():
     cart = session.get('cart', {})
-    total = sum(item['price'] * item['quantity']
-                for item in cart.values())  # カート内の商品合計金額
-    return render_template('cart.html', cart=cart, total=total)
+    total_price = sum(float(item['price']) * item['quantity'] for item in cart.values())
+
+    # カートのアイテムをテンプレート用にリスト化
+    products = [
+        {
+            'name': item['name'],
+            'price': item['price'],
+            'quantity': item['quantity'],
+            'total': round(float(item['price']) * item['quantity'], 2)  # 小数点2位で丸める
+        }
+        for item in cart.values()
+    ]
+
+    return render_template('cart.html', products=products, total_price=round(total_price, 2))
+@bp.route('/kounyu', methods=['GET', 'POST'])
+def kounyu():
+    # セッションからカートを取得
+    cart = session.get('cart', {})
+    total_price = sum(float(item['price']) * item['quantity'] for item in cart.values())
+
+    # カートのアイテムをテンプレート用にリスト化
+    products = [
+        {
+            'name': item['name'],
+            'price': item['price'],
+            'quantity': item['quantity'],
+            'total': round(float(item['price']) * item['quantity'], 2)  # 小数点2位で丸める
+        }
+        for item in cart.values()
+    ]
+
+    if request.method == 'POST':
+
+        # 商品ごとに処理
+        for product_key, item in cart.items():
+            product_id = item['product_id']  # セッションから取得したproduct_id
+            quantity = request.form.get(f'quantity_{product_key}')  # セッションから取得した商品に基づく数量
+            price = item['price']  # セッションから取得した価格
+
+            # バリデーション (商品ID、数量、価格が正しく入力されているかチェック)
+            if not product_id or not quantity or not price:
+                flash('すべてのフィールドを入力してください。')
+                return redirect(url_for('main.cart'))
+
+            # セッションのカート情報を使って Sale レコードを追加
+            new_sale = Sale(
+                product_id=product_id,
+                quantity=int(quantity),
+                price=float(price)
+            )
+            db.session.add(new_sale)
+            db.session.commit()
+
+        # 購入完了メッセージ
+        flash('購入が完了しました！')
+        # 完了後にトップページにリダイレクト
+        return redirect(url_for('main.index'))
+    
+    return render_template('kounyu.html', products=products, total_price=round(total_price, 2))
+
+
 
 
 @bp.route('/remove_from_cart/<int:product_id>')
 def remove_from_cart(product_id):
     cart = session.get('cart', {})
-    if product_id in cart:
-        del cart[product_id]  # カートから商品を削除
+    product_id_str = str(product_id)  # 商品IDを文字列として統一
+    if product_id_str in cart:
+        del cart[product_id_str]  # カートから商品を削除
         session['cart'] = cart
         flash('商品をカートから削除しました。')
     return redirect(url_for('main.cart'))
@@ -158,6 +220,7 @@ def profile():
 @bp.route('/faq', methods=['GET', 'POST'])
 def faq():
     # 要DB追加
+    faqs="hoge"
     return render_template('faq.html', faqs=faqs)
 
 
@@ -218,7 +281,8 @@ def admin_dashboard():
     users = User.query.all()
     inventories = Inventory.query.all()
     product = Product.query.all()
-    return render_template('admin_dashboard.html', name=current_user.email, users=users, inventories=inventories, product=product)
+    sales = Sale.query.all()
+    return render_template('admin_dashboard.html', name=current_user.email, users=users, inventories=inventories, product=product, sales=sales)
 
 
 @bp.route('/delete_user/<int:user_id>', methods=['POST'])
@@ -240,10 +304,12 @@ def delete_user(user_id):
 @admin_required
 def add_product():
     product_name = request.form.get('product_name')
+    product_price = request.form.get('product_price')
 
     # 種類を追加
     new_product = Product(
         name=product_name,
+        sale_price=product_price
     )
     db.session.add(new_product)
     db.session.commit()
@@ -262,7 +328,15 @@ def update_product(product_id):
 
     # 新しい数量を取得して更新
     new_product_name = request.form.get('new_product_name')
-    product.name = new_product_name
+    new_product_price = request.form.get('new_product_price')
+    # new_product_quantity = request.form.get('new_product_quantity')
+    
+    if(new_product_name):
+        product.name = new_product_name
+    if(new_product_price):
+        product.sale_price = new_product_price
+    # if(new_product_quantity):
+    #     product.quantity = new_product_quantity
     db.session.commit()
     flash("商品が更新されました。")
     return redirect(url_for('main.admin_dashboard'))

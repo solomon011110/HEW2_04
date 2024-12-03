@@ -1,3 +1,7 @@
+{% extends "layout.html" %}
+
+{% block title %}カート{% endblock %}
+{% block content %}
 <h1>カート</h1>
 {% if products %}
 <table>
@@ -21,8 +25,10 @@
   </tbody>
 </table>
 <p><strong>合計金額:</strong> ¥{{ total_price }}</p>
-<a href="/purchase" class="btn btn-primary">購入手続きへ</a>
+<a href="/kounyu" class="btn btn-primary">購入手続きへ</a>
 {% else %}
 <p>カートに商品がありません。</p>
 {% endif %}
 <a href="/" class="btn btn-secondary">戻る</a>
+
+{% endblock %}

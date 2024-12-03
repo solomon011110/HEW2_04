@@ -1,6 +1,6 @@
 from flask_sqlalchemy import SQLAlchemy
 from flask_login import UserMixin
-from datetime import datetime
+from datetime import datetime,timezone
 
 # Flask-SQLAlchemyを初期化
 db = SQLAlchemy()
@@ -46,10 +46,10 @@ class Inventory(db.Model):
 
 # 販売テーブル
 class Sale(db.Model):
-    __tablename__ = 'sales'
+    __tablename__ = 'sale'
     id = db.Column(db.Integer, primary_key=True)
     product_id = db.Column(db.Integer, db.ForeignKey('products.id'), nullable=False)
-    sale_date = db.Column(db.Date, default=datetime.utcnow)
+    sale_date = db.Column(db.DateTime, default=datetime.now())
     quantity = db.Column(db.Integer, nullable=False)
     price = db.Column(db.Float, nullable=False)
 
@@ -59,7 +59,7 @@ class Donation(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     product_id = db.Column(db.Integer, db.ForeignKey('products.id'), nullable=False)
     recipient_id = db.Column(db.Integer, db.ForeignKey('donation_recipients.id'), nullable=False)
-    donation_date = db.Column(db.Date, default=datetime.utcnow)
+    donation_date = db.Column(db.Date, default=datetime.now())
     quantity = db.Column(db.Integer, nullable=False)
 
 # 寄付先テーブル

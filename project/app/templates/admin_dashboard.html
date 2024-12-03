@@ -37,19 +37,26 @@
 <form action="{{ url_for('main.add_product') }}" method="POST">
     <label for="product_name">商品名:</label>
     <input type='text' name="product_name" required>
+    <label for="new_product_name">価格:</label>
+    <input type='text' name="product_price" />
     <button type="submit">追加</button>
 </form>
 <table>
     <th>商品ID</th>
     <th>商品名</th>
+    <th>価格</th>
+
 {% for product in product %}
 <tr>
     <td>{{ product.id }}</td>
     <td>{{ product.name }}</td>
+    <td>{{ product.sale_price }}</td>
     <td>
         <form action="{{ url_for('main.update_product', product_id=product.id) }}" method="POST">
         <label for="new_product_name">商品名:</label>
-        <input type='text' name="new_product_name" required>
+        <input type='text' name="new_product_name" />
+        <label for="new_product_name">価格:</label>
+        <input type='text' name="new_product_price" />
         <button type="submit">更新</button>
         </form>
     </td>
@@ -92,6 +99,26 @@
                     <button type="submit">削除</button>
                 </form>
             </td>
+        </tr>
+        {% endfor %}
+    </table>
+
+    <h1>販売履歴</h1>
+    <table>
+        <tr>
+            <th>販売ID</th>
+            <th>商品ID</th>
+            <th>販売日</th>
+            <th>販売数量</th>
+            <th>販売価格</th>
+        </tr>
+        {% for sale in sales %}
+        <tr>
+            <td>{{ sale.id }}</td>
+            <td>{{ sale.product_id }}</td>
+            <td>{{ sale.sale_date }}</td>
+            <td>{{ sale.quantity }}</td>
+            <td>{{ sale.price }}</td>
         </tr>
         {% endfor %}
     </table>

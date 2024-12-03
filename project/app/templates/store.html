@@ -1,5 +1,7 @@
-{% extends "layout.html" %} {% block title %}{{ product.name }}の詳細{% endblock
-%} {% block content %}
+{% extends "layout.html" %}
+{% block title %}{{ product.name }}の詳細{% endblock %}
+
+{% block content %}
 <div class="product-detail-container">
   <div class="product-detail">
     <h1 class="product-title">{{ product.name }}</h1>
@@ -7,19 +9,21 @@
       <img src="{{ image_url }}" alt="{{ product.name }}" />
     </div>
     <div class="product-info">
-      <p><strong>価格:</strong> ¥{{ product.price }}</p>
+      <p><strong>価格:</strong> ¥{{ product.sale_price }}</p>
       <p><strong>説明:</strong> {{ product.description }}</p>
     </div>
     <div class="product-actions">
-      <a
-        href="{{ url_for('main.add_to_cart', product_id=product.id) }}"
-        class="btn btn-primary"
-        >カートに追加</a
-      >
+      <form action="{{ url_for('main.add_to_cart', product_id=product.id) }}" method="POST">
+        <label for="quantity">数量:</label>
+        <input type="number" name="quantity" id="quantity" value="1" min="1" required />
+        <button type="submit" class="btn btn-primary">カートに追加</button>
+      </form>
       <a href="/" class="btn btn-secondary">戻る</a>
     </div>
   </div>
 </div>
+
+
 
 <style>
   .product-detail-container {
