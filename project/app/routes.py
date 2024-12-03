@@ -29,7 +29,7 @@ def index():
 def goods(id):
     product = Product.query.get_or_404(id)
     image_url = url_for('static', filename=f'img/product/{product.id}.jpg')
-    return render_template('goods.html', product=product, image_url=image_url)
+    return render_template('store.html', product=product, image_url=image_url)
 
 
 @bp.route('/add_to_cart/<int:product_id>', methods=['POST'])
