@@ -49,6 +49,7 @@ class Sale(db.Model):
     __tablename__ = 'sale'
     id = db.Column(db.Integer, primary_key=True)
     product_id = db.Column(db.Integer, db.ForeignKey('products.id'), nullable=False)
+    user_id = db.Column(db.Integer, db.ForeignKey('users.id'), nullable=False)
     sale_date = db.Column(db.DateTime, default=datetime.now())
     quantity = db.Column(db.Integer, nullable=False)
     price = db.Column(db.Float, nullable=False)
