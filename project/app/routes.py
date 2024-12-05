@@ -85,39 +85,99 @@ def kounyu():
             'name': item['name'],
             'price': item['price'],
             'quantity': item['quantity'],
-            'total': round(float(item['price']) * item['quantity'], 2)  # 小数点2位で丸める
+            'total': round(total_price, 2)  # 小数点2位で丸める
         }
         for item in cart.values()
     ]
 
     if request.method == 'POST':
+        email = current_user.email
+
+        # メール本文の作成
+        cart_contents = "\n".join(
+            [f"{item['name']} - {item['quantity']} 個 - 合計: {item['price'] * item['quantity']}円" for item in cart.values()]
+        )
+        cart_rows = "".join(
+            f"""
+            <tr>
+                <td style="padding: 10px; border: 1px solid #ddd; text-align: left;">{item['name']}</td>
+                <td style="padding: 10px; border: 1px solid #ddd; text-align: center;">{item['quantity']} 個</td>
+                <td style="padding: 10px; border: 1px solid #ddd; text-align: right;">¥{item['price'] * item['quantity']}</td>
+            </tr>
+            """ for item in cart.values()
+        )
+        
+        email_html = f"""
+        <!DOCTYPE html>
+        <html lang="ja">
+        <head>
+            <meta charset="UTF-8">
+        </head>
+        <body>
+        <table style="width: 100%; border: 0; border-spacing: 0; padding: 0;">
+            <tr>
+                <td style="padding: 10px; background-color: #f4f4f4;">
+                    <h1 style="font-family: Arial, sans-serif; color: #333;">購入確定のお知らせ</h1>
+                </td>
+            </tr>
+            <tr>
+                <td style="padding: 20px; background-color: #ffffff;">
+                    <p>ご注文いただき、ありがとうございます。以下の内容でご注文が確定しました。</p>
+                    <table style="width: 100%; border-collapse: collapse; font-size: 14px;">
+                        <thead>
+                            <tr>
+                                <th style="padding: 10px; border: 1px solid #ddd; background-color: #f4f4f4; text-align: left;">商品名</th>
+                                <th style="padding: 10px; border: 1px solid #ddd; background-color: #f4f4f4; text-align: center;">数量</th>
+                                <th style="padding: 10px; border: 1px solid #ddd; background-color: #f4f4f4; text-align: right;">合計</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {cart_rows}
+                        </tbody>
+                    </table>
+                    <p style="margin-top: 20px; font-size: 16px; font-weight: bold;">総合計: ¥{round(total_price, 2)}</p>
+                </td>
+            </tr>
+        </table>
+        </body>
+        </html>
+        """
 
         # 商品ごとに処理
         for product_key, item in cart.items():
-            product_id = item['product_id']  # セッションから取得したproduct_id
-            quantity = request.form.get(f'quantity_{product_key}')  # セッションから取得した商品に基づく数量
-            price = item['price']  # セッションから取得した価格
+            product_id = int(product_key)  # セッションから取得したproduct_id (キーとして使用)
+            quantity = item['quantity']  # カート情報から数量を取得
+            price = item['price']  # カート情報から価格を取得
 
-            # バリデーション (商品ID、数量、価格が正しく入力されているかチェック)
-            if not product_id or not quantity or not price:
-                flash('すべてのフィールドを入力してください。')
-                return redirect(url_for('main.cart'))
-
-            # セッションのカート情報を使って Sale レコードを追加
+            # Sale レコードを追加
             new_sale = Sale(
                 product_id=product_id,
                 quantity=int(quantity),
                 price=float(price)
             )
             db.session.add(new_sale)
-            db.session.commit()
+
+        # コミットして変更を確定
+        db.session.commit()
+
+        # メール送信
+        msg = Message(
+            '注文内容確認',
+            sender='hewgroup040@gmail.com',
+            recipients=[email],
+            html=email_html
+        )
+        mail.send(msg)
+
+        # カートを空にする
+        session.pop('cart', None)
 
         # 購入完了メッセージ
-        flash('購入が完了しました！')
-        # 完了後にトップページにリダイレクト
+        flash('購入が完了しました！メールで注文内容を確認してください。')
         return redirect(url_for('main.index'))
-    
+
     return render_template('kounyu.html', products=products, total_price=round(total_price, 2))
+
 
 
 

@@ -4,6 +4,7 @@ from flask_mail import Mail
 from app.config import Config
 from app.models import db, User, Product
 import os
+from werkzeug.security import generate_password_hash
 mail = Mail()
 
 def create_app():
@@ -52,7 +53,8 @@ def init_db():
     with db.session.begin():
         # Userデータの挿入
         if not User.query.filter_by(email='1@1').first():  # すでにユーザーが存在するか確認
-            user = User(email='1@1', password='1')
+            user = User(email='1@1', password=generate_password_hash(
+            "1", method='pbkdf2:sha256'))
             db.session.add(user)
         
         # Productデータの挿入
