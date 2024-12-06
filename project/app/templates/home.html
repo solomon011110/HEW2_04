@@ -11,6 +11,17 @@
 {% block content %}
 
 <body>
+  <form method="POST" action="/search">
+    <input type="text" name="query" placeholder="商品名で検索" />
+    <select name="category">
+      <option value="">すべてのカテゴリ</option>
+      <option value="フルーツ">フルーツ</option>
+      <option value="category2">カテゴリ2</option>
+      <!-- 必要に応じてカテゴリを追加 -->
+    </select>
+    <button type="submit">検索</button>
+  </form>
+  
     <div class="ad"><p>ad</p></div>
     <main>
       <div class="project-box">

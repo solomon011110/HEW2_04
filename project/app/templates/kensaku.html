@@ -1,0 +1,17 @@
+<h1>検索結果</h1>
+
+{% if products %}
+<ul>
+  {% for product in products %}
+  <li>
+    <img src="static/img/product/{{product.id}}.jpg" alt="{{ product.name }}" />
+    <strong>{{ product.name }}</strong><br />
+    カテゴリ: {{ product.category }}<br />
+    販売価格: ¥{{ product.sale_price }}<br />
+    状態: {{ product.status }}
+  </li>
+  {% endfor %}
+</ul>
+{% else %}
+<p>該当する商品が見つかりませんでした。</p>
+{% endif %}

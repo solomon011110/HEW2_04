@@ -1,7 +1,26 @@
-{% extends "layout.html" %}
-{% block title %}ユーザープロファイル{% endblock %}
-{% block content %}
-
-{{email}}
-
-{% endblock %}
+{% extends "layout.html" %} {% block title %}ユーザープロファイル{% endblock %}
+{% block content %} {{email}} {% if sales %}
+<table>
+  <thead>
+    <tr>
+      <th>IMG</th>
+      <th>購入日</th>
+      <th>商品名</th>
+      <th>金額</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for sale in sales %}
+    <tr>
+      <!-- sale_date を表示 -->
+      <td><img src="static/img/product/{{sale.product_id}}.jpg" /></td>
+      <td>{{ sale.sale_date.strftime('%Y-%m-%d %H:%M:%S') }}</td>
+      <td>{{ sale.product.name }}</td>
+      <td>{{ sale.price }}</td>
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>
+{% else %}
+<p>このユーザーはまだ購入していません。</p>
+{% endif %} {% endblock %}

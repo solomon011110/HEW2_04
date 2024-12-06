@@ -7,6 +7,7 @@ import os
 from werkzeug.security import generate_password_hash
 mail = Mail()
 
+
 def create_app():
     app = Flask(__name__)
 
@@ -24,7 +25,7 @@ def create_app():
 
     # ログインの初期化
     login_manager = LoginManager()
-    login_manager.init_app(app)  
+    login_manager.init_app(app)
     login_manager.login_view = "/login"
 
     # user_loaderを設定
@@ -49,22 +50,24 @@ def create_app():
     return app
 
 # テストデータ挿入の関数
+
+
 def init_db():
     with db.session.begin():
         # Userデータの挿入
         if not User.query.filter_by(email='1@1').first():  # すでにユーザーが存在するか確認
             user = User(email='1@1', password=generate_password_hash(
-            "1", method='pbkdf2:sha256'))
+                "1", method='pbkdf2:sha256'))
             db.session.add(user)
-        
+
         # Productデータの挿入
         if not Product.query.filter_by(name='アップル').first():  # すでにアップルが存在するか確認
-            apple = Product(name='アップル', sale_price=500)
+            apple = Product(name='アップル', sale_price=500, category="フルーツ")
             db.session.add(apple)
-        
+
         if not Product.query.filter_by(name='バナナ').first():  # すでにバナナが存在するか確認
-            banana = Product(name='バナナ', sale_price=200)
+            banana = Product(name='バナナ', sale_price=200, category="フルーツ")
             db.session.add(banana)
-        
+
         # 変更をコミットしてデータを保存
         db.session.commit()

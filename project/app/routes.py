@@ -24,11 +24,35 @@ def index():
 
 # 商品----------------------------------------------
 
+
 @bp.route('/store/<int:id>')
 def store(id):
     product = Product.query.get_or_404(id)
     image_url = url_for('static', filename=f'img/product/{product.id}.jpg')
     return render_template('store.html', product=product, image_url=image_url)
+
+
+@bp.route('/search', methods=['GET', 'POST'])
+def search_products():
+
+    query = request.form.get('query')  # 検索キーワード
+    category = request.form.get('category')  # カテゴリフィルタ
+
+    # クエリを構築
+    products = Product.query
+
+    if query:  # 商品名で検索
+        products = products.filter(Product.name.like(f"%{query}%"))
+
+    if category:  # カテゴリでフィルタリング
+        products = products.filter_by(category=category)
+
+    # クエリ実行
+    products = products.all()
+
+    return render_template('kensaku.html', products=products)
+
+
 @bp.route('/add_to_cart/<int:product_id>', methods=['POST'])
 def add_to_cart(product_id):
     quantity = int(request.form.get('quantity', 1))  # カートに追加する数量を取得
@@ -54,12 +78,11 @@ def add_to_cart(product_id):
     return redirect(url_for('main.cart'))
 
 
-
-
 @bp.route('/cart')
 def cart():
     cart = session.get('cart', {})
-    total_price = sum(float(item['price']) * item['quantity'] for item in cart.values())
+    total_price = sum(float(item['price']) * item['quantity']
+                      for item in cart.values())
 
     # カートのアイテムをテンプレート用にリスト化
     products = [
@@ -67,17 +90,21 @@ def cart():
             'name': item['name'],
             'price': item['price'],
             'quantity': item['quantity'],
-            'total': round(float(item['price']) * item['quantity'], 2)  # 小数点2位で丸める
+            # 小数点2位で丸める
+            'total': round(float(item['price']) * item['quantity'], 2)
         }
         for item in cart.values()
     ]
 
     return render_template('cart.html', products=products, total_price=round(total_price, 2))
+
+
 @bp.route('/kounyu', methods=['GET', 'POST'])
 def kounyu():
     # セッションからカートを取得
     cart = session.get('cart', {})
-    total_price = sum(float(item['price']) * item['quantity'] for item in cart.values())
+    total_price = sum(float(item['price']) * item['quantity']
+                      for item in cart.values())
 
     # カートのアイテムをテンプレート用にリスト化
     products = [
@@ -95,7 +122,8 @@ def kounyu():
 
         # メール本文の作成
         cart_contents = "\n".join(
-            [f"{item['name']} - {item['quantity']} 個 - 合計: {item['price'] * item['quantity']}円" for item in cart.values()]
+            [f"""{item['name']} - {item['quantity']} 個 - 合計: {item['price']
+                                                              * item['quantity']}円""" for item in cart.values()]
         )
         cart_rows = "".join(
             f"""
@@ -106,7 +134,7 @@ def kounyu():
             </tr>
             """ for item in cart.values()
         )
-        
+
         email_html = f"""
         <!DOCTYPE html>
         <html lang="ja">
@@ -135,7 +163,7 @@ def kounyu():
                             {cart_rows}
                         </tbody>
                     </table>
-                    <p style="margin-top: 20px; font-size: 16px; font-weight: bold;">総合計: ¥{round(total_price, 2)}</p>
+                    <p style="margin-top: 20px; font-size: 16px; font-weight: bold;">総合計: ¥{round(total_price, 2)}</p >
                 </td>
             </tr>
         </table>
@@ -148,10 +176,12 @@ def kounyu():
             product_id = int(product_key)  # セッションから取得したproduct_id (キーとして使用)
             quantity = item['quantity']  # カート情報から数量を取得
             price = item['price']  # カート情報から価格を取得
+            user = User.query.filter_by(email=email).first()
 
             # Sale レコードを追加
             new_sale = Sale(
                 product_id=product_id,
+                user_id=user.id,
                 quantity=int(quantity),
                 price=float(price)
             )
@@ -177,9 +207,6 @@ def kounyu():
         return redirect(url_for('main.index'))
 
     return render_template('kounyu.html', products=products, total_price=round(total_price, 2))
-
-
-
 
 
 @bp.route('/remove_from_cart/<int:product_id>')
@@ -273,14 +300,18 @@ def verify():
 @bp.route('/profile')
 @login_required
 def profile():
-    return render_template('profile.html', email=current_user.email)
+
+    sales = db.session.query(Sale).filter(
+        Sale.user_id == current_user.id).all()
+
+    return render_template('profile.html', sales=sales)
 # ----------------------------------------------一般アカウント
 
 
 @bp.route('/faq', methods=['GET', 'POST'])
 def faq():
     # 要DB追加
-    faqs="hoge"
+    faqs = "hoge"
     return render_template('faq.html', faqs=faqs)
 
 
@@ -390,10 +421,10 @@ def update_product(product_id):
     new_product_name = request.form.get('new_product_name')
     new_product_price = request.form.get('new_product_price')
     # new_product_quantity = request.form.get('new_product_quantity')
-    
-    if(new_product_name):
+
+    if (new_product_name):
         product.name = new_product_name
-    if(new_product_price):
+    if (new_product_price):
         product.sale_price = new_product_price
     # if(new_product_quantity):
     #     product.quantity = new_product_quantity
