@@ -7,12 +7,15 @@ html{
 }
 
 body div.container{
-  border: 1px black solid;
   border-radius: 20px;
   padding: 20px 0;
   width: 400px;
   margin: 0  auto;
   margin-bottom: 20px;
+  border-radius: 61px;
+  background: #ffffff;
+  box-shadow:  5px 5px 25px #cfcfcf,
+             -5px -5px 25px #ffffff;
 }
 
 h1.fsize{
@@ -28,11 +31,16 @@ h1.fsize{
 }
 
 .input input{
+  border:none;
   padding: 10px;
   line-height: 1;
   width: 100%;
   margin-bottom: 20px;
   box-sizing: border-box;
+  border-radius: 39px;
+  background: #ffffff;
+  box-shadow: inset 2px 2px 10px #878787,
+            inset -5px -5px 10px #ffffff;
 }
 
 .input select{
@@ -88,7 +96,7 @@ h1.fsize{
   text-align    : center;      /* 文字位置   */
   cursor        : pointer;     /* カーソル   */
   padding       : 5px 5px;   /* 余白       */
-  background    : greenyellow;     /* 背景色     */
+  background    : rgb(118, 196, 0);     /* 背景色     */
   color         : #ffffff;     /* 文字色     */
   line-height   : 30px;         /* 1行の高さ  */
   opacity       : 1;           /* 透明度     */
@@ -96,6 +104,10 @@ h1.fsize{
   width: 373px;
   border: solid 0px greenyellow;
   margin: 15px 0px 30px 0;
+  border-radius: 48px;
+  background: greenyellow;
+  box-shadow:  5px 5px 10px #6f966d,
+             -5px -5px 10px #ffffff;
 }
 .login input:hover {
   box-shadow    : none;        /* カーソル時の影消去 */
@@ -126,6 +138,7 @@ h1.fsize{
   margin: 0 auto;
   margin-top: 10px;
   margin-bottom: 10px;
+  border:none;
 }
 
 .register_line p{
@@ -146,6 +159,7 @@ h1.fsize{
 .register {
   margin: 0 auto;
   width: 400px;
+  border:none
 }
 
 .register a{
@@ -168,6 +182,12 @@ h1.fsize{
   width: 100%;
   box-sizing:border-box;
   /* text-align: center; */
+
+  border-radius: 61px;
+  background: #ffffff;
+  box-shadow:  5px 5px 25px #cfcfcf,
+               -5px -5px 25px #ffffff;
+
 }
 .register a:hover {
   box-shadow    : none;        /* カーソル時の影消去 */
@@ -252,7 +272,7 @@ h1.fsize{
   }
   
   body div.container{
-    border: 1px black solid;
+    /* border: 1px rgb(255, 0, 0) solid; */
     border-radius: 20px;
     padding: 20px 10px;
     width: 300px;

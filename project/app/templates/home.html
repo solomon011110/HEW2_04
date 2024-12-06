@@ -1,3 +1,11 @@
+<div class="main-visual">
+  <div class="slideshow">
+    <img src="{{ url_for('static', filename = 'img/sakana.jpg')}}" alt="Slideshow Image 1" class="active">
+    <img src="{{ url_for('static', filename = 'img/yasai.jpg')}}" alt="Slideshow Image 2">
+    <img src="{{ url_for('static', filename = 'img/zyamu.jpg')}}" alt="Slideshow Image 3">
+  </div>
+</div>
+
 {% extends "layout.html" %}
 
 {% block title %}ホーム{% endblock %}
@@ -5,15 +13,32 @@
   <meta charset="UTF-8">
   <link rel="stylesheet" href="../static/css/reset-min.css">
   <link rel="stylesheet" href="../static/css/style.css">
+  {% block css %}
+  <link rel="stylesheet" href="../static/css/home.css">
+  {% endblock %}
   <title></title>
 </head>
 
 {% block content %}
 
 <body>
-    <div class="ad"><p>ad</p></div>
     <main>
-      <div class="project-box">
+      <div class="item-pickup">
+        <!-- <h2>佐賀県〇〇市のお山の中</h2>
+        <p>自然豊かな環境の中、水にこだわり 昔ながらのスタイルで<br>
+        安心・安全・おいしいたまごを、うまれたその日のうちに出荷する養鶏場です。</p>
+        <p>
+          鶏舎は、昔ながらの開放鶏舎。<br>
+          創業以来、毎日鶏と顔を合わせる「全手採り」スタイルで養鶏を行っています。<br>
+          プロが配合設計した飼料をベースに、<br>
+          武雄産のレモングラスや佐賀県産のアスパラなどを加えるかたちで<br>
+          オリジナルフードも作って日々試行錯誤を繰り返しています。
+        </p> -->
+      </div>
+      <div class="commodity_top">
+        
+      </div>
+      <!-- <div class="project-box">
         <div class="flex-box title">
           <p>最近見たプロジェクト</p>
           <p><a href="">もっと見る></a></p>
@@ -127,9 +152,11 @@
           <a href=""><div class="interview-content"><p>interview</p></div></a>
           <a href=""><div class="interview-content"><p>interview</p></div></a>
         </div>
-      </div>
+      </div> -->
     </main>
-    
+
+<script src="https://code.jquery.com/jquery-3.7.0.js" integrity="sha256-JlqSTELeR4TLqP0OG9dxM7yDPqX1ox/HfgiSLBj8+kM=" crossorigin="anonymous"></script><!-- jQueryのCDN設定 -->
+<script src="{{ url_for('static', filename='js/slide.js') }}"></script>
 </body>
 
 {% endblock %}

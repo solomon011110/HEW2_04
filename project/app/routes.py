@@ -160,10 +160,18 @@ def purchasecon():
 def resetpass():
     return render_template('resetpass.html')
 
+faq_data = [
+    ("ラズパイとは何ですか？"),
+    ("CGIとは何ですか？")
+]
 
+@bp.route('/inquiry')
+def inquiry():
+    return render_template('inquiry.html', faqs=faq_data)
 
-
-
+@bp.route('/enquiry')
+def enquiry():
+    return render_template('enquiry.html')
 
 
 
@@ -239,3 +247,7 @@ def delete_user(user_id):
         db.session.commit()
         return redirect(url_for('main.admin_dashboard'))
     return "ユーザーが見つかりません", 404
+
+from flask import Flask, render_template, request, redirect
+import sqlite3
+
