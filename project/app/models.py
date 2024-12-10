@@ -87,6 +87,27 @@ class Contact(db.Model):
     email = db.Column(db.String(100))
     text = db.Column(db.Text)
 
+
+class Review(db.Model):
+    __tablename__ = 'review'
+    id = db.Column(db.Integer, primary_key=True)
+    product_id = db.Column(db.Integer, db.ForeignKey('products.id'), nullable=False)
+    name = db.Column(db.String(50))
+    star = db.Column(db.Integer)
+    title = db.Column(db.String(100))
+    describe = db.Column(db.Text)
+    review_date = db.Column(db.DateTime, default=datetime.now())
+
+
+
+
+class Post(db.Model):
+    __tablename__ = 'posts'
+    id = db.Column(db.Integer, primary_key=True)  # 投稿ID
+    device_id = db.Column(db.String(100), nullable=False)  # 投稿者の一意ID
+    content = db.Column(db.Text, nullable=False)  # 投稿内容
+    timestamp = db.Column(db.DateTime, default=datetime.now)  # 投稿日時
+
 # リレーション設定
 
 

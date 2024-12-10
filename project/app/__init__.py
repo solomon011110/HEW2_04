@@ -1,16 +1,18 @@
-from flask import Flask
+from flask import *
 from flask_login import LoginManager
 from flask_mail import Mail
 from app.config import Config
 from app.models import db, User, Product
-import os
+import os,uuid
 from werkzeug.security import generate_password_hash
+from flask_socketio import *
 mail = Mail()
-
+socketio = SocketIO()
 
 def create_app():
     app = Flask(__name__)
-
+    # SocketIOのインスタンスをアプリに結びつける
+    socketio.init_app(app)
     # 設定ファイルの読み込み
     app.config.from_object(Config)
     app.config['SECRET_KEY'] = os.urandom(24)
@@ -32,6 +34,16 @@ def create_app():
     @login_manager.user_loader
     def load_user(user_id):
         return User.query.get(int(user_id))
+    
+
+    @app.before_request
+    def assign_device_id():
+        # Cookieに一意のIDがない場合、新規作成
+        if 'device_id' not in request.cookies:
+            unique_id = str(uuid.uuid4())
+            response = make_response()
+            response.set_cookie('device_id', unique_id)
+            return response
 
     # メールの設定
     app.config['MAIL_SERVER'] = 'smtp.gmail.com'

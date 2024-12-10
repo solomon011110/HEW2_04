@@ -1,10 +1,11 @@
-from flask import Flask, Blueprint, redirect, render_template, request, url_for, flash, session
+from flask import *
 from werkzeug.security import generate_password_hash, check_password_hash
 from flask_mail import Mail, Message
-from app.models import db, User, Inventory, Contact, Product, Sale
+from app.models import db, User, Inventory, Contact, Product, Sale, Review, Post
 from flask_login import current_user, LoginManager, UserMixin, login_user, logout_user, login_required
 from functools import wraps
-from app import mail
+from app import mail, socketio
+from flask_socketio import *
 
 bp = Blueprint('main', __name__)
 
@@ -29,7 +30,29 @@ def index():
 def store(id):
     product = Product.query.get_or_404(id)
     image_url = url_for('static', filename=f'img/product/{product.id}.jpg')
-    return render_template('store.html', product=product, image_url=image_url)
+    reviews = Review.query.filter(id == Review.product_id).all()
+    return render_template('store.html', product=product, image_url=image_url, reviews=reviews)
+
+@bp.route('/store/<int:product_id>/review', methods=['POST'])
+@login_required
+def add_review(product_id):
+    title = request.form.get("title")  # カートに追加する数量を取得
+    describe = request.form.get("describe")
+    star = request.form.get("star")
+    name = session.get('name')
+    product_id_str = str(product_id)  # 商品IDを文字列として統一
+
+    new_Review = Review(
+        product_id = product_id_str,
+        title = title,
+        star = star,
+        describe = describe,
+        name = name
+    )
+    db.session.add(new_Review)
+    db.session.commit()
+
+    return redirect(url_for('main.store',id=product_id))
 
 
 @bp.route('/search', methods=['GET', 'POST'])
@@ -303,8 +326,8 @@ def profile():
 
     sales = db.session.query(Sale).filter(
         Sale.user_id == current_user.id).all()
-
-    return render_template('profile.html', sales=sales)
+    
+    return render_template('profile.html', sales=sales,user=current_user)
 # ----------------------------------------------一般アカウント
 
 
@@ -488,3 +511,40 @@ def update_inventory(inventory_id):
     flash("在庫が更新されました。")
     return redirect(url_for('main.admin_dashboard'))
 # --------------------------------------------------------------admin
+
+
+
+
+
+
+@socketio.on('new_message')
+def handle_new_message(data):
+    # メッセージが新しく投稿された場合の処理
+    print("New message received: ", data)
+    # クライアントにメッセージをブロードキャスト
+    emit('message_received', data, broadcast=True)
+
+
+@bp.route('/board', methods=['GET'])
+def board():
+    posts = Post.query.order_by(Post.timestamp.desc()).all()
+    return render_template('board.html', posts=posts)
+
+# 投稿を受け取るルート
+@bp.route('/post', methods=['POST'])
+def post_message():
+    device_id = request.cookies.get('device_id')
+    content = request.form.get('content')
+    if content and device_id:
+        new_post = Post(device_id=device_id, content=content)
+        db.session.add(new_post)
+        db.session.commit()
+        # 新しい投稿をSocketIOでクライアントに送信
+        socketio.emit('new_message', {'content': content, 'timestamp': new_post.timestamp.strftime('%Y-%m-%d %H:%M:%S'), 'device_id': device_id}, broadcast=True)
+    return redirect('/board')
+
+# ソケットイベント：新しいメッセージが送信された場合
+@socketio.on('new_message')
+def handle_new_message(data):
+    # クライアントにメッセージをブロードキャスト
+    emit('message_received', data, broadcast=True)

@@ -20,6 +20,25 @@
       </form>
       <a href="/" class="btn btn-secondary">戻る</a>
     </div>
+
+    <div>
+      <div>
+        <form action="{{ url_for('main.add_review', product_id=product.id) }}" method="post">
+          <label>評価<input type="number" name="star"></label>
+          <label>タイトル<input type="text" name="title"></label>
+          <label>本文<input type="text" name="describe"></label>
+          <input type="submit" value="送信">
+        </form>
+      </div>
+      <div>
+        <b>レビュー</b>
+        {% for review in reviews %}
+        <p>{{review.title}}　{{review.star}}</p>
+        <p>{{review.describe}}</p>
+        <br/>
+        {% endfor %}
+      </div>
+    </div>
   </div>
 </div>
 
