@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>掲示板</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.3.2/socket.io.min.js"></script>
+</head>
+<body>
+    <h1>掲示板</h1>
+    <div id="messages">
+        {% for post in posts %}
+            <div class="message">
+                <p><strong>{{ post.device_id }}</strong> | {{ post.timestamp.strftime('%Y-%m-%d %H:%M:%S') }}</p>
+                <p>{{ post.content }}</p>
+            </div>
+        {% endfor %}
+    </div>
+
+    <form action="/post" method="POST">
+        <textarea name="content" required></textarea>
+        <button type="submit">投稿</button>
+    </form>
+
+    <script>
+        // サーバーに接続
+        const socket = io.connect('http://' + document.domain + ':' + location.port);
+
+        // 新しいメッセージを受け取ったとき
+        socket.on('new_message', function(data) {
+            const messagesDiv = document.getElementById('messages');
+            const newMessage = document.createElement('div');
+            newMessage.classList.add('message');
+            newMessage.innerHTML = `
+                <p><strong>${data.device_id}</strong> | ${data.timestamp}</p>
+                <p>${data.content}</p>
+            `;
+            messagesDiv.insertBefore(newMessage, messagesDiv.firstChild);
+        });
+
+        // メッセージ送信時
+        socket.on('message_received', function(data) {
+            console.log('Message received:', data);
+        });
+    </script>
+</body>
+</html>

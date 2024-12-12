@@ -516,35 +516,3 @@ def update_inventory(inventory_id):
 
 
 
-
-@socketio.on('new_message')
-def handle_new_message(data):
-    # メッセージが新しく投稿された場合の処理
-    print("New message received: ", data)
-    # クライアントにメッセージをブロードキャスト
-    emit('message_received', data, broadcast=True)
-
-
-@bp.route('/board', methods=['GET'])
-def board():
-    posts = Post.query.order_by(Post.timestamp.desc()).all()
-    return render_template('board.html', posts=posts)
-
-# 投稿を受け取るルート
-@bp.route('/post', methods=['POST'])
-def post_message():
-    device_id = request.cookies.get('device_id')
-    content = request.form.get('content')
-    if content and device_id:
-        new_post = Post(device_id=device_id, content=content)
-        db.session.add(new_post)
-        db.session.commit()
-        # 新しい投稿をSocketIOでクライアントに送信
-        socketio.emit('new_message', {'content': content, 'timestamp': new_post.timestamp.strftime('%Y-%m-%d %H:%M:%S'), 'device_id': device_id}, broadcast=True)
-    return redirect('/board')
-
-# ソケットイベント：新しいメッセージが送信された場合
-@socketio.on('new_message')
-def handle_new_message(data):
-    # クライアントにメッセージをブロードキャスト
-    emit('message_received', data, broadcast=True)
