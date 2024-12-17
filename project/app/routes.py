@@ -174,9 +174,18 @@ def enquiry():
     return render_template('enquiry.html')
 
 
+@bp.route('/search')
+def search():
+    return render_template('search.html')
 
 
+@bp.route('/products')
+def products():
+    return render_template('products.html')
 
+@bp.route('/product')
+def product():
+    return render_template('product.html')
 
 
 @bp.route('/admin_login', methods=['GET', 'POST'])

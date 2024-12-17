@@ -9,15 +9,15 @@
       </div>
       <div class="header-list">
         <div class="header-content">
-          <form action="#" class="search-form-3">
+          <form action="" class="search-form-3" method="get">
             <label>
-                <input type="text" placeholder="キーワードを入力">
+                <input type="text" placeholder="キーワードを入力" name="search_name">
             </label>
-            <button type="submit" aria-label="検索"></button>
+            <button type="submit" aria-label="検索" ></button>
           </form>
         </div>
         <div class="header-content">
-          <p>what is</p>
+          <span><a href="{{url_for('main.products')}}"><p>what is</p></a></span>
         </div>
           {% if current_user.is_authenticated %}
           <div class="header-content">

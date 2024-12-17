@@ -88,3 +88,14 @@ form input[type="submit"]:hover {
   max-width: 100%;
   margin: 0 auto;
 }
+
+.navi_ {
+  display: flex;
+  justify-content: space-evenly;
+  margin: 10px;
+}
+
+/* .faq-section { 
+  display: flex;
+  justify-content: center;
+} */

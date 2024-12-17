@@ -6,6 +6,12 @@ html{
   height: 100%;
 }
 
+body{
+  height: 100%;
+  display: grid;
+  align-content: space-evenly;
+}
+
 body div.container{
   border-radius: 20px;
   padding: 20px 0;
@@ -15,7 +21,7 @@ body div.container{
   border-radius: 61px;
   background: #ffffff;
   box-shadow:  5px 5px 25px #cfcfcf,
-             -5px -5px 25px #ffffff;
+            -5px -5px 25px #ffffff;
 }
 
 h1.fsize{
