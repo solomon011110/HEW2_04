@@ -1,6 +1,6 @@
 from flask_sqlalchemy import SQLAlchemy
 from flask_login import UserMixin
-from datetime import datetime, timezone
+from datetime import datetime
 
 # Flask-SQLAlchemyを初期化
 db = SQLAlchemy()
@@ -14,7 +14,12 @@ class User(UserMixin, db.Model):
     email = db.Column(db.String(50), unique=True, nullable=False)
     password = db.Column(db.String(25), nullable=False)
     name = db.Column(db.String(50), nullable=True)
+    post = db.Column(db.String(), nullable=True)
     address = db.Column(db.String(100), nullable=True)
+    ken = db.Column(db.String(10), nullable=True)
+    siku = db.Column(db.String(10), nullable=True)
+    tyo = db.Column(db.String(10), nullable=True)
+    ban = db.Column(db.String(100), nullable=True)
     phone = db.Column(db.String(20), nullable=True)
 
 
@@ -86,6 +91,18 @@ class Contact(db.Model):
     name = db.Column(db.String(50))
     email = db.Column(db.String(100))
     text = db.Column(db.Text)
+
+#レビューてーｂ
+
+class Review(db.Model):
+    __tablename__ = 'review'
+    id = db.Column(db.Integer, primary_key=True)
+    product_id = db.Column(db.Integer, db.ForeignKey('products.id'), nullable=False)
+    name = db.Column(db.String(50))
+    star = db.Column(db.Integer)
+    title = db.Column(db.String(100))
+    describe = db.Column(db.Text)
+    review_date = db.Column(db.DateTime, default=datetime.now())
 
 # リレーション設定
 

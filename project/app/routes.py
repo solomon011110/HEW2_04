@@ -1,7 +1,7 @@
 from flask import Flask, Blueprint, redirect, render_template, request, url_for, flash, session
 from werkzeug.security import generate_password_hash, check_password_hash
 from flask_mail import Mail, Message
-from app.models import db, User, Inventory, Contact, Product, Sale
+from app.models import db, User, Inventory, Contact, Product, Sale,  Review, Review
 from flask_login import current_user, LoginManager, UserMixin, login_user, logout_user, login_required
 from functools import wraps
 from app import mail
@@ -29,7 +29,30 @@ def index():
 def store(id):
     product = Product.query.get_or_404(id)
     image_url = url_for('static', filename=f'img/product/{product.id}.jpg')
-    return render_template('store.html', product=product, image_url=image_url)
+    reviews = Review.query.filter(id == Review.product_id).all()
+    return render_template('store.html', product=product, image_url=image_url, reviews=reviews)
+
+
+@bp.route('/store/<int:product_id>/review', methods=['POST'])
+@login_required
+def add_review(product_id):
+    title = request.form.get("title")  # カートに追加する数量を取得
+    describe = request.form.get("describe")
+    star = request.form.get("star")
+    name = session.get('name')
+    product_id_str = str(product_id)  # 商品IDを文字列として統一
+
+    new_Review = Review(
+        product_id = product_id_str,
+        title = title,
+        star = star,
+        describe = describe,
+        name = name
+    )
+    db.session.add(new_Review)
+    db.session.commit()
+
+    return redirect(url_for('main.store',id=product_id))
 
 
 @bp.route('/search', methods=['GET', 'POST'])
@@ -120,56 +143,61 @@ def kounyu():
     if request.method == 'POST':
         email = current_user.email
 
-        # メール本文の作成
-        cart_contents = "\n".join(
-            [f"""{item['name']} - {item['quantity']} 個 - 合計: {item['price']
-                                                              * item['quantity']}円""" for item in cart.values()]
-        )
         cart_rows = "".join(
-            f"""
-            <tr>
-                <td style="padding: 10px; border: 1px solid #ddd; text-align: left;">{item['name']}</td>
-                <td style="padding: 10px; border: 1px solid #ddd; text-align: center;">{item['quantity']} 個</td>
-                <td style="padding: 10px; border: 1px solid #ddd; text-align: right;">¥{item['price'] * item['quantity']}</td>
-            </tr>
-            """ for item in cart.values()
-        )
+    f"""
+    <tr>
+        <td style=\"padding: 10px; border: 1px solid #ddd; text-align: left;\">{item['name']}</td>
+        <td style=\"padding: 10px; border: 1px solid #ddd; text-align: center;\">{item['quantity']} 個</td>
+        <td style=\"padding: 10px; border: 1px solid #ddd; text-align: right;\">\u00a5{item['price'] * item['quantity']}</td>
+    </tr>
+    """ for item in cart.values()
+)
 
         email_html = f"""
-        <!DOCTYPE html>
-        <html lang="ja">
-        <head>
-            <meta charset="UTF-8">
-        </head>
-        <body>
-        <table style="width: 100%; border: 0; border-spacing: 0; padding: 0;">
+<!DOCTYPE html>
+<html lang=\"ja\">
+<head>
+  <meta charset=\"UTF-8\">
+  <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">
+  <title>\u8cfc\u5165\u78ba\u5b9a\u306e\u304a\u77e5\u3089\u305b</title>
+</head>
+<body style=\"font-family: Arial, sans-serif; background-color: #f4f4f4; margin: 0; padding: 0;\">
+  <table style=\"width: 100%; border: 0; border-spacing: 0; padding: 0;\">
+    <tr>
+      <td style=\"padding: 10px; background-color: #171a21; text-align: center; color: #66c0f4;\">
+        <h1 style=\"margin: 0; font-size: 24px;\">\u3054\u8cfc\u5165\u3042\u308a\u304c\u3068\u3046\u3054\u3056\u3044\u307e\u3059\uff01</h1>
+      </td>
+    </tr>
+    <tr>
+      <td style=\"padding: 20px; background-color: #ffffff; color: #333;\">
+        <h2 style=\"margin-top: 0; font-size: 20px;\">\u6ce8\u6587\u78ba\u8a8d\u66f8</h2>
+        <p>\u3054\u6ce8\u6587\u3044\u305f\u3060\u304d\u3001\u8cfc\u5165\u304c\u78ba\u5b9a\u3057\u307e\u3057\u305f\u3002\u4ee5\u4e0b\u306f\u3054\u6ce8\u6587\u5185\u5bb9\u3067\u3059\u3002</p>
+        <table style=\"width: 100%; border-collapse: collapse; margin-top: 20px;\">
+          <thead>
             <tr>
-                <td style="padding: 10px; background-color: #f4f4f4;">
-                    <h1 style="font-family: Arial, sans-serif; color: #333;">購入確定のお知らせ</h1>
-                </td>
+              <th style=\"padding: 10px; border: 1px solid #66c0f4; background-color: #2a475e; color: #c7d5e0; text-align: left;\">\u5546\u54c1\u540d</th>
+              <th style=\"padding: 10px; border: 1px solid #66c0f4; background-color: #2a475e; color: #c7d5e0; text-align: center;\">\u6570\u91cf</th>
+              <th style=\"padding: 10px; border: 1px solid #66c0f4; background-color: #2a475e; color: #c7d5e0; text-align: right;\">\u5408\u8a08</th>
             </tr>
-            <tr>
-                <td style="padding: 20px; background-color: #ffffff;">
-                    <p>ご注文いただき、ありがとうございます。以下の内容でご注文が確定しました。</p>
-                    <table style="width: 100%; border-collapse: collapse; font-size: 14px;">
-                        <thead>
-                            <tr>
-                                <th style="padding: 10px; border: 1px solid #ddd; background-color: #f4f4f4; text-align: left;">商品名</th>
-                                <th style="padding: 10px; border: 1px solid #ddd; background-color: #f4f4f4; text-align: center;">数量</th>
-                                <th style="padding: 10px; border: 1px solid #ddd; background-color: #f4f4f4; text-align: right;">合計</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            {cart_rows}
-                        </tbody>
-                    </table>
-                    <p style="margin-top: 20px; font-size: 16px; font-weight: bold;">総合計: ¥{round(total_price, 2)}</p >
-                </td>
-            </tr>
+          </thead>
+          <tbody>
+            {cart_rows}
+          </tbody>
         </table>
-        </body>
-        </html>
-        """
+        <p style=\"text-align: right; font-size: 16px; margin-top: 20px;\"><strong>\u7dcf\u5408\u8a08: \u00a5{round(total_price, 2)}</strong></p>
+        <p style=\"margin-top: 30px;\">\u3053\u306e\u5ea6\u306f\u98df\u54c1\u30ed\u30b9\u6e1b\u5c11\u306b\u3054\u5354\u529b\u3044\u305f\u3060\u304d\u3001\u8aa0\u306b\u3042\u308a\u304c\u3068\u3046\u3054\u3056\u3044\u307e\u3059\u3002</p>
+        <p>\u5546\u54c1\u306e\u767a\u9001\u6e96\u5099\u304c\u6574\u3044\u6b21\u7b2c\u3001\u8a73\u7d30\u3092\u3054\u6848\u5185\u3044\u305f\u3057\u307e\u3059\u3002\u3054\u4e0d\u660e\u70b9\u304c\u3054\u3056\u3044\u307e\u3057\u305f\u3089\u3001\u30b5\u30dd\u30fc\u30c8\u30c1\u30fc\u30e0\u307e\u3067\u304a\u6c17\u8efd\u306b\u3054\u9023\u7d61\u304f\u3060\u3055\u3044\u3002</p>
+      </td>
+    </tr>
+    <tr>
+      <td style=\"padding: 10px; background-color: #171a21; text-align: center; color: #c7d5e0; font-size: 14px;\">
+        <p>&copy; 2024 [SUSTELLA]. All rights reserved.</p>
+      </td>
+    </tr>
+  </table>
+</body>
+</html>
+"""
 
         # 商品ごとに処理
         for product_key, item in cart.items():
@@ -255,15 +283,25 @@ def register():
         email = request.form['email']
         password = generate_password_hash(
             request.form['password'], method='pbkdf2:sha256')
-        # 認証コード生成
+        phon = request.form['phon']
+        post = request.form['post']
+        prefecture = request.form['prefecture']
+        siku = request.form['siku']
+        tyo = request.form['tyo']
+        ban = request.form['ban']
         verification_code = generate_verification_code()
 
-        # セッションに認証コードを保存
+       
         session['verification_code'] = verification_code
         session['email'] = email
         session['password'] = password
-
-        # 認証コードをメールで送信
+        session['phon']=phon
+        session['post']=post
+        session['prefecture']=prefecture
+        session['siku']=siku
+        session['tyo']= tyo         
+        session['ban']=ban
+                                # 認証コードをメールで送信
         msg = Message('Your Verification Code',
                       sender='hewgroup040@gmail.com', recipients=[email])
         msg.body = f'Your verification code is: {verification_code}'
@@ -300,11 +338,11 @@ def verify():
 @bp.route('/profile')
 @login_required
 def profile():
-    user = current_user
+
     sales = db.session.query(Sale).filter(
         Sale.user_id == current_user.id).all()
 
-    return render_template('profile.html', sales=sales, user=user)
+    return render_template('profile.html', sales=sales)
 # ----------------------------------------------一般アカウント
 
 
