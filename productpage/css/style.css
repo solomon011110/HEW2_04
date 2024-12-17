@@ -1,0 +1,138 @@
+@charset "UTF-8";
+.item .hidden {
+    display: none !important;
+}
+.item .flex-box{
+	display: flex;
+}
+.item a{
+	text-decoration: none;
+    color: black;
+    display: block;
+    width: 280px;
+}
+
+.item{
+    width: 1280px;
+    margin: auto;
+    margin-top: 100px;
+    background-color: #fffcf8;}
+.item h2{
+    font-size: 28px;
+    font-weight: bold;
+
+}
+.item .content{
+    display: flex;
+    flex-wrap: wrap;
+}
+.item .item-box{
+    margin: 0 0 52px;
+}
+.item .image-box{
+    width: 280px;
+    height:280px;
+}
+.item .item-box:not(:nth-child(4n)){
+    margin: 0 53px 52px 0;
+}
+.image-box {
+    position: relative;
+    width: 300px;
+    height: 300px;
+}
+
+.image-box img {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    border-radius: 10px;
+}
+
+.image-box:hover img:first-child {
+    opacity: 0;
+    transition: 0.8s;
+}
+
+.image-box img:last-child {
+    opacity: 0;
+}
+
+.image-box:hover img:first-child {
+    opacity: 0;
+}
+
+.image-box:hover img:last-child {
+    opacity: 1;
+    transition: 0.5s;
+}
+.item .text-box{
+    margin: 8px 0 0;
+}
+.item .name{
+    font-size: 18px;
+}
+.item .tax{
+    font-size: 12px;
+}
+.item .review{
+    align-items: center;
+}
+.item .review .howmanyreviews{
+    font-size: 12px;
+    margin: 0 0 0 6px
+}
+.item .cart{
+    margin: 12px 0 0 0;
+    height: 52px;
+    align-items: center;
+    border: black 1px solid;
+    border-radius: 5px;
+}
+.item .cart:hover{
+    background-color: #e9e9df;
+    transition: 0.2s;
+}
+.item .cart p{
+    margin: auto;
+}
+.item .sort{
+    margin: 0 0 24px 0;
+    justify-content: end;
+}
+.item .search{
+    align-items: center;
+    margin: 0 0 44px 0;
+}
+.item .search p{
+    margin: 0 0 0 12px;
+    font-weight: bolder;
+    font-size: 20px;
+}
+.item .border{
+    width: 1180px;
+    margin: 40px auto;
+    border-bottom: 2px solid #e9e1d1;
+}
+.item .morebtn{
+    text-align: center;
+}
+.item .more-read {
+    background-color: #fffcf8;
+    cursor: pointer;
+    padding: 10px 50px;
+    border: 1px black solid;
+    border-radius: 5px;
+    font-size: 14px;
+    text-align: center;
+    transition: all 0.3s ease;
+}
+.item .more-read:hover {
+    background-color: #e9e9df;
+    box-shadow: 0 6px 10px rgba(0, 0, 0, 0.2);
+}
+.item .more-read:active {
+    transform: scale(0.95);
+}
