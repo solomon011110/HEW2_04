@@ -103,6 +103,10 @@ class Review(db.Model):
     describe = db.Column(db.Text)
     review_date = db.Column(db.DateTime, default=datetime.now())
 
+class Fcat(db.Model):
+    user_id = db.Column(db.Integer, primary_key=True)
+    flute = db.Column(db.Integer)    
+
 # リレーション設定
 
 

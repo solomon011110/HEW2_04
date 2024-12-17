@@ -1,7 +1,7 @@
 from flask import Flask, Blueprint, redirect, render_template, request, url_for, flash, session
 from werkzeug.security import generate_password_hash, check_password_hash
 from flask_mail import Mail, Message
-from app.models import db, User, Inventory, Contact, Product, Sale,  Review, Review
+from app.models import db, User, Inventory, Contact, Product, Sale,  Review, Review, Fcat
 from flask_login import current_user, LoginManager, UserMixin, login_user, logout_user, login_required
 from functools import wraps
 from app import mail
@@ -200,11 +200,14 @@ def kounyu():
 """
 
         # 商品ごとに処理
+        # cat = {"flute":0}
         for product_key, item in cart.items():
             product_id = int(product_key)  # セッションから取得したproduct_id (キーとして使用)
             quantity = item['quantity']  # カート情報から数量を取得
             price = item['price']  # カート情報から価格を取得
             user = User.query.filter_by(email=email).first()
+
+            # cat[f'{item["category"]}'] += item['quantity']
 
             # Sale レコードを追加
             new_sale = Sale(
@@ -214,8 +217,12 @@ def kounyu():
                 price=float(price)
             )
             db.session.add(new_sale)
-
         # コミットして変更を確定
+
+            # add_Fcat = Fcat(
+            #     flute = Fcat.flute+cat['flute']
+            # )
+            # db.session.add(add_Fcat)
         db.session.commit()
 
         # メール送信
@@ -285,11 +292,11 @@ def register():
             request.form['password'], method='pbkdf2:sha256')
         phon = request.form['phon']
         name = request.form['name'].replace(' ', '').replace('　', '')
-        post = request.form['post']
-        prefecture = request.form['prefecture']
-        siku = request.form['siku']
-        tyo = request.form['tyo']
-        ban = request.form['ban']
+        post = request.form['post'].replace(' ', '').replace('　', '')
+        prefecture = request.form['prefecture'].replace(' ', '').replace('　', '')
+        siku = request.form['siku'].replace(' ', '').replace('　', '')
+        tyo = request.form['tyo'].replace(' ', '').replace('　', '')
+        ban = request.form['ban'].replace(' ', '').replace('　', '')
         verification_code = generate_verification_code()
 
        
@@ -428,7 +435,10 @@ def delete_user(user_id):
     if user and user_id != 1:
         db.session.delete(user)
         db.session.commit()
-        return redirect(url_for('main.admin_dashboard'))
+        if user and user_id == 1:
+            return redirect(url_for('main.admin_dashboard'))
+        else:
+            return redirect(url_for('main.login'))
     return "ユーザーが見つかりません", 404
 
 
