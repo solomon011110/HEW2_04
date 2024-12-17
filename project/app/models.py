@@ -15,7 +15,6 @@ class User(UserMixin, db.Model):
     password = db.Column(db.String(25), nullable=False)
     name = db.Column(db.String(50), nullable=True)
     post = db.Column(db.String(), nullable=True)
-    address = db.Column(db.String(100), nullable=True)
     ken = db.Column(db.String(10), nullable=True)
     siku = db.Column(db.String(10), nullable=True)
     tyo = db.Column(db.String(10), nullable=True)

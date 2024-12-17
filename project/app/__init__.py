@@ -37,7 +37,7 @@ def create_app():
     app.config['MAIL_SERVER'] = 'smtp.gmail.com'
     app.config['MAIL_PORT'] = 587
     app.config['MAIL_USERNAME'] = 'hewgroup040@gmail.com'
-    app.config['MAIL_PASSWORD'] = 'eeur oncr sfjz ssmc'  # アプリパスワードを使用
+    app.config['MAIL_PASSWORD'] = 'dpqe vznv rglo aegn'  # アプリパスワードを使用
     app.config['MAIL_USE_TLS'] = True
     app.config['MAIL_USE_SSL'] = False
     app.config['MAIL_DEFAULT_SENDER'] = 'hewgroup040@gmail.com'

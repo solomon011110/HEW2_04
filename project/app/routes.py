@@ -284,6 +284,7 @@ def register():
         password = generate_password_hash(
             request.form['password'], method='pbkdf2:sha256')
         phon = request.form['phon']
+        name = request.form['name'].replace(' ', '').replace('　', '')
         post = request.form['post']
         prefecture = request.form['prefecture']
         siku = request.form['siku']
@@ -296,6 +297,7 @@ def register():
         session['email'] = email
         session['password'] = password
         session['phon']=phon
+        session['name']=name
         session['post']=post
         session['prefecture']=prefecture
         session['siku']=siku
@@ -324,8 +326,15 @@ def verify():
             id = session.get('id')
             email = session.get('email')
             password = session.get('password')
+            phon = session.get('phon')
+            name = session.get('name')
+            post = session.get('post')
+            ken = session.get('prefecture')
+            siku = session.get('siku')
+            tyo = session.get('tyo')
+            ban = session.get('ban')
             # Userのインスタンスを作成
-            user = User(id=id, email=email, password=password)
+            user = User(id=id, email=email, password=password, phone=phon, name=name, post=post, ken=ken, siku=siku, tyo=tyo, ban=ban)
             db.session.add(user)
             db.session.commit()
             return redirect("login")
@@ -341,8 +350,7 @@ def profile():
 
     sales = db.session.query(Sale).filter(
         Sale.user_id == current_user.id).all()
-
-    return render_template('profile.html', sales=sales)
+    return render_template('profile.html', sales=sales,user=current_user)
 # ----------------------------------------------一般アカウント
 
 
@@ -415,11 +423,7 @@ def admin_dashboard():
 
 
 @bp.route('/delete_user/<int:user_id>', methods=['POST'])
-@admin_required
 def delete_user(user_id):
-    if current_user.email != admin_credentials["username"]:  # 管理者のみアクセス許可
-        return "アクセス権がありません", 403
-
     user = User.query.get(user_id)
     if user and user_id != 1:
         db.session.delete(user)
