@@ -300,11 +300,11 @@ def verify():
 @bp.route('/profile')
 @login_required
 def profile():
-
+    user = current_user
     sales = db.session.query(Sale).filter(
         Sale.user_id == current_user.id).all()
 
-    return render_template('profile.html', sales=sales)
+    return render_template('profile.html', sales=sales, user=user)
 # ----------------------------------------------一般アカウント
 
 
