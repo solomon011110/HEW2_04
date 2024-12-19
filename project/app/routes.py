@@ -100,26 +100,36 @@ def add_to_cart(product_id):
     flash(f"{product.name} をカートに追加しました。")
     return redirect(url_for('main.cart'))
 
-
 @bp.route('/cart')
 def cart():
     cart = session.get('cart', {})
-    total_price = sum(float(item['price']) * item['quantity']
+    
+    total_price = sum(float(item['price']) * int(item['quantity'])
                       for item in cart.values())
 
     # カートのアイテムをテンプレート用にリスト化
     products = [
         {
+            'id':key,
             'name': item['name'],
             'price': item['price'],
             'quantity': item['quantity'],
             # 小数点2位で丸める
             'total': round(float(item['price']) * item['quantity'], 2)
         }
-        for item in cart.values()
+        for key, item in cart.items()
     ]
 
     return render_template('cart.html', products=products, total_price=round(total_price, 2))
+
+@bp.route("/pop_from_cart", methods=['POST'])
+def pop_from_cart():
+    id = request.form.get("id")
+
+    cart = session.get('cart', {})
+    cart.pop(str(id), None)
+    session['cart'] = cart
+    return redirect(url_for("main.cart"))
 
 
 @bp.route('/kounyu', methods=['GET', 'POST'])

@@ -20,6 +20,7 @@
       <td>¥{{ product.price }}</td>
       <td>{{ product.quantity }}</td>
       <td>¥{{ product.total }}</td>
+      <td><form action="{{url_for('main.pop_from_cart')}}" method="post"><input type="hidden" name="id" value="{{ product.id }}"><input type="submit" value="削除"></form></td>
     </tr>
     {% endfor %}
   </tbody>
