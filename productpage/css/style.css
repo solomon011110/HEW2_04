@@ -138,3 +138,130 @@
 .product .cart p{
     margin: auto;
 }
+
+.product .recommend{
+    margin-top: 100px;
+}
+.product .recommend .item-box{
+    width: 255px;
+    margin: 0 0 52px;
+}
+.product .recommend .image-box{
+    width: 255px;
+    height:255px;
+}
+.product .recommend .item-box:not(:nth-child(4n)){
+    margin: 0 53px 52px 0;
+}
+.product .recommend .image-box {
+    position: relative;
+    width: 265px;
+    height: 265px;
+}
+
+.product .recommend .image-box img {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    border-radius: 10px;
+}
+.product .recommend .text-box{
+    margin: 8px 0 0;
+}
+.product .recommend .name{
+    font-size: 18px;
+}
+.product .recommend .tax{
+    font-size: 12px;
+}
+.product .recommend .review{
+    align-items: center;
+}
+.product .recommend .review .howmanyreviews{
+    font-size: 12px;
+    margin: 0 0 0 6px
+}
+.product .recommend .cart{
+    width: 255px;
+    margin: 12px 0 0 0;
+    height: 52px;
+    align-items: center;
+    border: black 1px solid;
+    border-radius: 5px;
+}
+.product .recommend .cart:hover{
+    background-color: #e9e9df;
+    transition: 0.2s;
+}
+.product .recommend .cart p{
+    margin: auto;
+}
+.product .recommend .sort{
+    margin: 0 0 24px 0;
+    justify-content: end;
+}
+.product .recommend .search{
+    align-items: center;
+    margin: 0 0 44px 0;
+}
+.product .recommend .search p{
+    margin: 0 0 0 12px;
+    font-weight: bolder;
+    font-size: 20px;
+}
+.product .recommend .border{
+    width: 1180px;
+    margin: 40px auto;
+    border-bottom: 2px solid #e9e1d1;
+}
+.product .recommend .morebtn{
+    text-align: center;
+}
+.product .recommend .more-read {
+    background-color: #fffcf8;
+    cursor: pointer;
+    padding: 10px 50px;
+    border: 1px black solid;
+    border-radius: 5px;
+    font-size: 14px;
+    text-align: center;
+    transition: all 0.3s ease;
+}
+.product .recommend .more-read:hover {
+    background-color: #e9e9df;
+    box-shadow: 0 6px 10px rgba(0, 0, 0, 0.2);
+}
+.product .recommend .more-read:active {
+    transform: scale(0.95);
+}
+.product .review-box h5{
+    margin: 0;
+}
+.product .review-box .star-box{
+    width: 200px;
+    margin: 20px 0 0 0;
+}
+.product .review-box .summary{
+    width: 980px;
+    margin: 20px 0 0 0;
+}
+.product .comment{
+    margin: 30px 0 0 0;
+}
+.product .comment img{
+    width: 50px;
+}
+.product .comment .flex-box{
+    align-items: center;
+}
+.product .comment .flex-box p{
+    margin: 0 0 0 12px;
+}
+.product .comment .bold{
+    font-weight: bold;
+}
+.product .comment .review-box-box{
+    margin: 12px 0 0 0;
+}
