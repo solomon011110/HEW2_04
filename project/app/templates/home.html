@@ -1,37 +1,134 @@
-{% extends "layout.html" %}
+<!-- <div class="start">
+  <p><img src="{{ url_for('static', filename = 'img/logo_3.png')}}" alt=""></p>
+</div> -->
 
-{% block title %}ホーム{% endblock %}
+<div class="main-visual">
+  <div class="slideshow">
+    <img
+      src="{{ url_for('static', filename = 'img/sakana.jpg')}}"
+      alt="Slideshow Image 1"
+      class="active"
+    />
+    <img
+      src="{{ url_for('static', filename = 'img/yasai.jpg')}}"
+      alt="Slideshow Image 2"
+    />
+    <img
+      src="{{ url_for('static', filename = 'img/zyamu.jpg')}}"
+      alt="Slideshow Image 3"
+    />
+  </div>
+</div>
+
+{% extends "layout.html" %} {% block title %}ホーム{% endblock %}
 <head>
-  <meta charset="UTF-8">
-  <link rel="stylesheet" href="../static/css/reset-min.css">
-  <link rel="stylesheet" href="../static/css/style.css">
+  <meta charset="UTF-8" />
+  <link rel="stylesheet" href="../static/css/reset-min.css" />
+  <link rel="stylesheet" href="../static/css/style.css" />
+  {% block css %}
+  <link rel="stylesheet" href="../static/css/home.css" />
+  {% endblock %}
   <title></title>
 </head>
 
 {% block content %}
 
 <body>
-  <form method="POST" action="/search">
-    <input type="text" name="query" placeholder="商品名で検索" />
-    <select name="category">
-      <option value="">すべてのカテゴリ</option>
-      <option value="フルーツ">フルーツ</option>
-      <option value="category2">カテゴリ2</option>
-      <!-- 必要に応じてカテゴリを追加 -->
-    </select>
-    <button type="submit">検索</button>
-  </form>
-  
-    <div class="ad"><p>ad</p></div>
-    <main>
-      <div class="project-box">
+  <main>
+    <div class="item-pickup">
+      <div class="item-pickup_content">
+        <h1>SUSTELLAのこだわり</h1>
+        <p>
+          SUSTELLAでは商品にならずに廃棄される規格外品を<br />安く販売することで食品ロスの削減を目指しています。
+        </p>
+        <p>
+          主に廃棄される見た目の悪い規格外品を使った加工品や<br />味は正規品と遜色ない見た目が悪いだけで廃棄される食品を冷凍して販売しています。
+        </p>
+      </div>
+    </div>
+    <div class="commodity_top">
+      <div class="commodity">
+        <a href="{{url_for('main.product')}}">
+          <div class="commodity_img">
+            <img
+              src="{{ url_for('static', filename = 'img/jamu_2.png')}}"
+              alt=""
+            />
+          </div>
+          <div class="text_set">
+            <img
+              src="{{ url_for('static', filename = 'img/ichigo.png')}}"
+              alt=""
+            />
+            <p>
+              見た目や形が規格に合わず市場に出せないいちごを、そのまま廃棄せずに加工し、食品ロスの削減と地球環境への配慮を両立させた、美味しさあふれるオリジナルジャム。
+            </p>
+          </div>
+        </a>
+      </div>
+    </div>
+
+    <div class="commodity_main">
+      <div class="commodity_middle">
+        <div class="commodity_content">
+          <a href="/store/1">
+            <div class="img"></div>
+            <h2>apple</h2>
+            <h4>長野県産　シナノゴールド</h4>
+            <p>¥1,980（税込）</p>
+          </a>
+        </div>
+        <div class="commodity_content">
+          <a href="/store/2">
+            <div class="img"></div>
+            <h2>banana</h2>
+            <h4>ブラジル産　バナナ</h4>
+            <p>¥1,980（税込）</p></a
+          >
+        </div>
+        <div class="commodity_content">
+          <a href="/store/3">
+            <div class="img"></div>
+            <h2>iwashi</h2>
+            <h4>石川県産　イワシ</h4>
+            <p>¥1,980（税込）</p></a
+          >
+        </div>
+        <div class="commodity_content">
+          <a href="/store/4">
+            <div class="img"></div>
+            <h2>kyabetsu</h2>
+            <h4>愛知県産　キャベツ</h4>
+            <p>¥1,980（税込）</p></a
+          >
+        </div>
+      </div>
+      <div class="others">
+        <a href="">
+          <p>もっと見る</p>
+          <div class="arrow">
+            <p>»</p>
+          </div>
+        </a>
+      </div>
+    </div>
+    <div class="map_main">
+      <div class="map">
+        <iframe
+          src="https://www.google.com/maps/d/u/0/embed?mid=1auv6RDERvmv2HqqSTKqxtYCCau5CUQA&ehbc=2E312F&noprof=1&ll=35.73865292325437%2C139.75624718490045&z=10"
+          width="540"
+          height="380"
+        ></iframe>
+      </div>
+    </div>
+    <!-- <div class="project-box">
         <div class="flex-box title">
           <p>最近見たプロジェクト</p>
           <p><a href="">もっと見る></a></p>
         </div>
         <div class="flex-box project">
-          <a href="{{url_for('main.store', id='1')}}"><div class="project-content"><p>store_apple</p></div></a>
-          <a href="{{url_for('main.store', id='2')}}"><div class="project-content"><p>store_banana</p></div></a>
+          <a href=""><div class="project-content"><p>project</p></div></a>
+          <a href=""><div class="project-content"><p>project</p></div></a>
           <a href=""><div class="project-content"><p>project</p></div></a>
           <a href=""><div class="project-content"><p>project</p></div></a>
         </div>
@@ -138,9 +235,18 @@
           <a href=""><div class="interview-content"><p>interview</p></div></a>
           <a href=""><div class="interview-content"><p>interview</p></div></a>
         </div>
-      </div>
-    </main>
-    
+      </div> -->
+  </main>
+
+  {% block script %}
+  <script
+    src="https://code.jquery.com/jquery-3.7.0.js"
+    integrity="sha256-JlqSTELeR4TLqP0OG9dxM7yDPqX1ox/HfgiSLBj8+kM="
+    crossorigin="anonymous"
+  ></script>
+  <script src="{{ url_for('static', filename='js/slide.js') }}"></script>
+  <!-- <script src="{{ url_for('static', filename='js/start.js') }}"></script> -->
+  {% endblock %}
 </body>
 
 {% endblock %}

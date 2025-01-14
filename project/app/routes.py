@@ -25,6 +25,31 @@ def index():
 # 商品----------------------------------------------
 
 
+@bp.route('/inquiry')
+def inquiry():
+    return render_template('inquiry.html', faqs=faq_data)
+
+
+@bp.route('/enquiry')
+def enquiry():
+    return render_template('enquiry.html')
+
+
+@bp.route('/search')
+def search():
+    return render_template('search.html')
+
+
+@bp.route('/products')
+def products():
+    return render_template('products.html')
+
+
+@bp.route('/product')
+def product():
+    return render_template()
+
+
 @bp.route('/store/<int:id>')
 def store(id):
     product = Product.query.get_or_404(id)
@@ -43,16 +68,16 @@ def add_review(product_id):
     product_id_str = str(product_id)  # 商品IDを文字列として統一
 
     new_Review = Review(
-        product_id = product_id_str,
-        title = title,
-        star = star,
-        describe = describe,
-        name = name
+        product_id=product_id_str,
+        title=title,
+        star=star,
+        describe=describe,
+        name=name
     )
     db.session.add(new_Review)
     db.session.commit()
 
-    return redirect(url_for('main.store',id=product_id))
+    return redirect(url_for('main.store', id=product_id))
 
 
 @bp.route('/search', methods=['GET', 'POST'])
@@ -100,17 +125,18 @@ def add_to_cart(product_id):
     flash(f"{product.name} をカートに追加しました。")
     return redirect(url_for('main.cart'))
 
+
 @bp.route('/cart')
 def cart():
     cart = session.get('cart', {})
-    
+
     total_price = sum(float(item['price']) * int(item['quantity'])
                       for item in cart.values())
 
     # カートのアイテムをテンプレート用にリスト化
     products = [
         {
-            'id':key,
+            'id': key,
             'name': item['name'],
             'price': item['price'],
             'quantity': item['quantity'],
@@ -121,6 +147,7 @@ def cart():
     ]
 
     return render_template('cart.html', products=products, total_price=round(total_price, 2))
+
 
 @bp.route("/pop_from_cart", methods=['POST'])
 def pop_from_cart():
@@ -154,14 +181,14 @@ def kounyu():
         email = current_user.email
 
         cart_rows = "".join(
-    f"""
+            f"""
     <tr>
         <td style=\"padding: 10px; border: 1px solid #ddd; text-align: left;\">{item['name']}</td>
         <td style=\"padding: 10px; border: 1px solid #ddd; text-align: center;\">{item['quantity']} 個</td>
         <td style=\"padding: 10px; border: 1px solid #ddd; text-align: right;\">\u00a5{item['price'] * item['quantity']}</td>
     </tr>
     """ for item in cart.values()
-)
+        )
 
         email_html = f"""
 <!DOCTYPE html>
@@ -301,26 +328,26 @@ def register():
         password = generate_password_hash(
             request.form['password'], method='pbkdf2:sha256')
         phon = request.form['phon']
-        name = request.form['name'].replace(' ', '').replace('　', '')
-        post = request.form['post'].replace(' ', '').replace('　', '')
-        prefecture = request.form['prefecture'].replace(' ', '').replace('　', '')
-        siku = request.form['siku'].replace(' ', '').replace('　', '')
-        tyo = request.form['tyo'].replace(' ', '').replace('　', '')
-        ban = request.form['ban'].replace(' ', '').replace('　', '')
+        # name = request.form['name'].replace(' ', '').replace('　', '')
+        # post = request.form['post'].replace(' ', '').replace('　', '')
+        # prefecture = request.form['prefecture'].replace(
+        #     ' ', '').replace('　', '')
+        # siku = request.form['siku'].replace(' ', '').replace('　', '')
+        # tyo = request.form['tyo'].replace(' ', '').replace('　', '')
+        # ban = request.form['ban'].replace(' ', '').replace('　', '')
         verification_code = generate_verification_code()
 
-       
         session['verification_code'] = verification_code
         session['email'] = email
         session['password'] = password
-        session['phon']=phon
-        session['name']=name
-        session['post']=post
-        session['prefecture']=prefecture
-        session['siku']=siku
-        session['tyo']= tyo         
-        session['ban']=ban
-                                # 認証コードをメールで送信
+        session['phon'] = phon
+        # session['name'] = name
+        # session['post'] = post
+        # session['prefecture'] = prefecture
+        # session['siku'] = siku
+        # session['tyo'] = tyo
+        # session['ban'] = ban
+        # 認証コードをメールで送信
         msg = Message('Your Verification Code',
                       sender='hewgroup040@gmail.com', recipients=[email])
         msg.body = f'Your verification code is: {verification_code}'
@@ -351,7 +378,8 @@ def verify():
             tyo = session.get('tyo')
             ban = session.get('ban')
             # Userのインスタンスを作成
-            user = User(id=id, email=email, password=password, phone=phon, name=name, post=post, ken=ken, siku=siku, tyo=tyo, ban=ban)
+            user = User(id=id, email=email, password=password, phone=phon,
+                        name=name, post=post, ken=ken, siku=siku, tyo=tyo, ban=ban)
             db.session.add(user)
             db.session.commit()
             return redirect("login")
@@ -367,7 +395,7 @@ def profile():
 
     sales = db.session.query(Sale).filter(
         Sale.user_id == current_user.id).all()
-    return render_template('profile.html', sales=sales,user=current_user)
+    return render_template('profile.html', sales=sales, user=current_user)
 # ----------------------------------------------一般アカウント
 
 

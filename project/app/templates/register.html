@@ -1,22 +1,17 @@
-<!DOCTYPE html>
-<html lang="ja">
-<head>
-    <meta charset="UTF-8">
-    <link rel="stylesheet" href="/static/css/reset-min.css">
-    <link rel="stylesheet" href="/static/css/style.css">
-    <title>{% block title %}My Site{% endblock %}</title>
-</head>
+{% extends "layout.html" %}
 
+{% block css %}
+<link rel="stylesheet" href="../static/css/login.css">
+{% endblock %}
 
 {% block script%}
 <script src="https://yubinbango.github.io/yubinbango/yubinbango.js" charset="UTF-8"></script>
 {% endblock %}
 
-
 {% block content %}
 <div class="container">
     <form method="post">
-      <h1 class="fsize">登録</h1> 
+      <h1 class="fsize">登録</h1>
       <div class="content">
         <div class="input_box">
           <div class="input">
@@ -34,7 +29,7 @@
             <div class="input_post_code">
               <span class="p-country-name" style="display:none;">Japan</span>
               <p>郵便番号</p>
-              <input type="text" class="p-postal-code" size="7" name="post" maxlength="7" placeholder="例：0000000">
+              <input type="text" name="post" class="p-postal-code" size="3" maxlength="3" placeholder="例：000">-<input type="text" class="p-postal-code" size="4" maxlength="4" placeholder="例：0000">
             </div>
             <div class="input">
               <p>都道府県</p>
@@ -90,16 +85,16 @@
               </select>
             </div>
             <div class="input">
-              <p>市区町村</p>
-              <input type="text" name="siku" class="p-locality" placeholder="例：〇〇市"/>
+              <p>市町村区</p>
+              <input type="text" class="p-locality" placeholder="例：〇〇市"/>
             </div>
             <div class="input">
               <p>町域</p>
-              <input type="text" name="tyo" class="p-street-address" placeholder="例：〇〇町"/>
+              <input type="text" class="p-street-address" placeholder="例：〇〇町"/>
             </div>
             <div class="input">
               <p>丁目・番地・号（数字は半角数字）</p>
-              <input type="text" name="ban" class="p-extended-address" placeholder="例：1-2-3"/>
+              <input type="text" class="p-extended-address" placeholder="例：1-2-3"/>
             </div>
             <div class="input">
               <p>建物名／会社名・部屋番号</p>
@@ -108,10 +103,6 @@
                 <input type="text" class="" placeholder="例：101">
               </div>
             </div>
-          </div>
-          <div class="input">
-            <p>名前</p>
-            <input type="text" name="name" placeholder="HAL太郎">
           </div>
           <div class="input">
             <p>パスワード</p>

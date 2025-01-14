@@ -1,7 +1,5 @@
-{% extends "layout.html" %}
-{% block title %}{{ product.name }}の詳細{% endblock %}
-
-{% block content %}
+{% extends "layout.html" %} {% block title %}{{ product.name }}の詳細{% endblock
+%} {% block content %}
 <div class="product-detail-container">
   <div class="product-detail">
     <h1 class="product-title">{{ product.name }}</h1>
@@ -13,9 +11,19 @@
       <p><strong>説明:</strong> {{ product.description }}</p>
     </div>
     <div class="product-actions">
-      <form action="{{ url_for('main.add_to_cart', product_id=product.id) }}" method="POST">
+      <form
+        action="{{ url_for('main.add_to_cart', product_id=product.id) }}"
+        method="POST"
+      >
         <label for="quantity">数量:</label>
-        <input type="number" name="quantity" id="quantity" value="1" min="1" required />
+        <input
+          type="number"
+          name="quantity"
+          id="quantity"
+          value="1"
+          min="1"
+          required
+        />
         <button type="submit" class="btn btn-primary">カートに追加</button>
       </form>
       <a href="/" class="btn btn-secondary">戻る</a>
@@ -23,11 +31,14 @@
 
     <div>
       <div>
-        <form action="{{ url_for('main.add_review', product_id=product.id) }}" method="post">
-          <label>評価<input type="number" name="star"></label>
-          <label>タイトル<input type="text" name="title"></label>
-          <label>本文<input type="text" name="describe"></label>
-          <input type="submit" value="送信">
+        <form
+          action="{{ url_for('main.add_review', product_id=product.id) }}"
+          method="post"
+        >
+          <label>評価<input type="number" name="star" /></label>
+          <label>タイトル<input type="text" name="title" /></label>
+          <label>本文<input type="text" name="describe" /></label>
+          <input type="submit" value="送信" />
         </form>
       </div>
       <div>
@@ -35,14 +46,12 @@
         {% for review in reviews %}
         <p>{{review.title}}　{{review.star}}</p>
         <p>{{review.describe}}</p>
-        <br/>
+        <br />
         {% endfor %}
       </div>
     </div>
   </div>
 </div>
-
-
 
 <style>
   .product-detail-container {

@@ -23,16 +23,21 @@
     <div class="flex-box">
       <p class="flame">住所</p>
       <p class="userinfo">{{ user.post }}</p>
-      <p class="userinfo">{{ user.ken }}{{user.siku}}{{user.tyo}}{{user.ban}}</p>
+      <p class="userinfo">
+        {{ user.ken }}{{user.siku}}{{user.tyo}}{{user.ban}}
+      </p>
     </div>
     <div class="flex-box">
       <p class="flame">パスワード</p>
       <p class="userinfo">**********</p>
     </div>
 
-    <form action="{{ url_for('main.delete_user', user_id=user.id) }}" method="POST">
+    <form
+      action="{{ url_for('main.delete_user', user_id=user.id) }}"
+      method="POST"
+    >
       <button type="submit">削除</button>
-  </form>
+    </form>
   </div>
 
   <div class="caption">
