@@ -25,19 +25,12 @@ def index():
 # 商品----------------------------------------------
 
 
-@bp.route('/inquiry')
-def inquiry():
-    return render_template('inquiry.html', faqs=faq_data)
 
 
 @bp.route('/enquiry')
 def enquiry():
     return render_template('enquiry.html')
 
-
-@bp.route('/search')
-def search():
-    return render_template('search.html')
 
 
 @bp.route('/products')
@@ -98,7 +91,8 @@ def search_products():
     # クエリ実行
     products = products.all()
 
-    return render_template('kensaku.html', products=products)
+    return render_template('kensaku.html', products=products, query=query, category=category)
+
 
 
 @bp.route('/add_to_cart/<int:product_id>', methods=['POST'])
