@@ -5,7 +5,11 @@ content %}
   <div class="item-box">
     {% if products %} {% for product in products %}
     <div class="item flex-box">
-      <img src="{{ product.image_url }}" alt="{{ product.name }}" />
+      <div class="image-box">
+        {% for image in product.images %}
+        <img src="{{ product.images[0] }}" alt="{{ product.name }}" />
+        {% endfor %}
+      </div>
       <div class="text-box">
         <div class="text flex-box">
           <p class="name">{{ product.name }}</p>
@@ -37,6 +41,7 @@ content %}
     <p>カートに商品がありません。</p>
     {% endif %}
   </div>
+
   <div class="total">
     {% if products %}
     <div class="flex-box">

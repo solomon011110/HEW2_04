@@ -1,3 +1,4 @@
+from flask import url_for
 from flask import Flask, Blueprint, redirect, render_template, request, url_for, flash, session
 from werkzeug.security import generate_password_hash, check_password_hash
 from flask_mail import Mail, Message
@@ -5,13 +6,25 @@ from app.models import db, User, Inventory, Contact, Product, Sale,  Review, Rev
 from flask_login import current_user, LoginManager, UserMixin, login_user, logout_user, login_required
 from functools import wraps
 from app import mail
-
+from pathlib import Path
 bp = Blueprint('main', __name__)
 
 admin_credentials = {
     'username': '1@1',
     'password': '1'
 }
+
+
+def get_product_images(product_id):
+    # 商品IDに基づいて画像ファイルのリストを動的に生成
+    base_path = f"img/products/{product_id}"
+    # 手動でファイル名を指定
+    image_files = ["1.jpg", "2.jpg", "3.jpg"]
+
+    images = [url_for('static', filename=f"{
+                      base_path}/{file}") for file in image_files]
+
+    return images
 
 
 def generate_verification_code():
@@ -130,8 +143,8 @@ def cart():
             'name': item['name'],
             'price': item['price'],
             'quantity': item['quantity'],
-            # 小数点2位で丸める
-            'total': round(float(item['price']) * item['quantity'], 2)
+            'total': round(float(item['price']) * item['quantity'], 2),
+            'images': get_product_images(key)  # 商品の画像URLリストを取得
         }
         for key, item in cart.items()
     ]
