@@ -1,40 +1,53 @@
 {% extends "layout.html" %} {% block title %}カート{% endblock %} {% block
 content %}
-<h1>カート</h1>
-{% if products %}
-<table>
-  <thead>
-    <tr>
-      <th>商品名</th>
-      <th>価格</th>
-      <th>数量</th>
-      <th>小計</th>
-    </tr>
-  </thead>
-  <tbody>
-    {% for product in products %}
-    <tr>
-      <td>{{ product.name }}</td>
-      <td>¥{{ product.price }}</td>
-      <td>{{ product.quantity }}</td>
-      <td>¥{{ product.total }}</td>
-      <td>
-        <form action="{{url_for('main.pop_from_cart')}}" method="post">
-          <input type="hidden" name="id" value="{{ product.id }}" /><input
-            type="submit"
-            value="削除"
-          />
-        </form>
-      </td>
-    </tr>
-    {% endfor %}
-  </tbody>
-</table>
-<p><strong>合計金額:</strong> ¥{{ total_price }}</p>
-<a href="/kounyu" class="btn btn-primary">購入手続きへ</a>
-{% else %}
-<p>カートに商品がありません。</p>
-{% endif %}
+<h3>カート</h3>
+<div class="flex-box">
+  <div class="item-box">
+    {% if products %} {% for product in products %}
+    <div class="item flex-box">
+      <img src="{{ product.image_url }}" alt="{{ product.name }}" />
+      <div class="text-box">
+        <div class="text flex-box">
+          <p class="name">{{ product.name }}</p>
+          <p class="price">¥{{ product.price }}</p>
+        </div>
+        <div class="flex-box">
+          <div class="count flex-box">
+            <form action="{{ url_for('main.update_quantity') }}" method="post">
+              <input type="hidden" name="id" value="{{ product.id }}" />
+              <button type="submit" name="action" value="decrease" class="btn">
+                -
+              </button>
+              <p class="num">{{ product.quantity }}</p>
+              <button type="submit" name="action" value="increase" class="btn">
+                +
+              </button>
+            </form>
+            <form
+              action="{{ url_for('main.remove_from_cart', product_id=product.id) }}"
+              method="post"
+            >
+              <button type="submit" class="btn">削除</button>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+    {% endfor %} {% else %}
+    <p>カートに商品がありません。</p>
+    {% endif %}
+  </div>
+  <div class="total">
+    {% if products %}
+    <div class="flex-box">
+      <p>合計</p>
+      <p>¥{{ total_price }}</p>
+    </div>
+    <div class="next flex-box">
+      <a href="/kounyu" class="btn btn-primary">購入手続きに進む</a>
+    </div>
+    {% endif %}
+  </div>
+</div>
 <a href="/" class="btn btn-secondary">戻る</a>
-
 {% endblock %}
