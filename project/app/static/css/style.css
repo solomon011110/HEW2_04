@@ -981,7 +981,6 @@ text-decoration: none;
     width: 650px;
 }
 .cart .item{
-    display: flex;
     padding: 20px 38px;
 }
 .cart .text-box{
