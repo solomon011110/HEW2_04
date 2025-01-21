@@ -460,7 +460,7 @@ footer p{
     width: 780px;
     margin: auto;
     margin-top: 100px;
-    background-color: #fffcf8;}
+    background-color: white;}
 
 .profile h3{
     font-size: 24px;
@@ -537,7 +537,7 @@ text-decoration: none;
   width: 1280px;
   margin: auto;
   margin-top: 100px;
-  background-color: #fffcf8;}
+  background-color: white;}
 .item h2{
   font-size: 28px;
   font-weight: bold;
@@ -641,7 +641,7 @@ text-decoration: none;
   text-align: center;
 }
 .item .more-read {
-  background-color: #fffcf8;
+  background-color: white;
   cursor: pointer;
   padding: 10px 50px;
   border: 1px black solid;
@@ -671,7 +671,7 @@ text-decoration: none;
     width: 1180px;
     margin: auto;
     margin-top: 100px;
-    background-color: #fffcf8;}
+    background-color: white;}
 
 .product h3{
     font-size: 28px;
@@ -781,7 +781,7 @@ text-decoration: none;
     font-size: 14px;
     margin: 0 0 0 6px
 }
-.product .cart{
+.product button{
     margin: 12px 0 0 0;
     width: 500px;
     height: 52px;
@@ -789,8 +789,9 @@ text-decoration: none;
     border: black 1px solid;
     border-radius: 5px;
     cursor: pointer;
+    background-color: white;
 }
-.product .cart:hover{
+.product .btn:hover{
     background-color: #e9e9df;
     transition: 0.2s;
 }
@@ -879,7 +880,7 @@ text-decoration: none;
     text-align: center;
 }
 .product .recommend .more-read {
-    background-color: #fffcf8;
+    background-color: white;
     cursor: pointer;
     padding: 10px 50px;
     border: 1px black solid;
