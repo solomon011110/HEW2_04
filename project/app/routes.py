@@ -25,12 +25,9 @@ def index():
 # 商品----------------------------------------------
 
 
-
-
 @bp.route('/enquiry')
 def enquiry():
     return render_template('enquiry.html')
-
 
 
 @bp.route('/products')
@@ -92,7 +89,6 @@ def search_products():
     products = products.all()
 
     return render_template('kensaku.html', products=products, query=query, category=category)
-
 
 
 @bp.route('/add_to_cart/<int:product_id>', methods=['POST'])
@@ -275,7 +271,7 @@ def kounyu():
     return render_template('kounyu.html', products=products, total_price=round(total_price, 2))
 
 
-@bp.route('/remove_from_cart/<int:product_id>')
+@bp.route('/remove_from_cart/<int:product_id>', methods=['POST'])
 def remove_from_cart(product_id):
     cart = session.get('cart', {})
     product_id_str = str(product_id)  # 商品IDを文字列として統一
@@ -285,6 +281,35 @@ def remove_from_cart(product_id):
         flash('商品をカートから削除しました。')
     return redirect(url_for('main.cart'))
 
+
+@bp.route('/update_quantity', methods=['POST'])
+def update_quantity():
+    # リクエストから商品IDと操作（増減）を取得
+    product_id = request.form.get('id')
+    action = request.form.get('action')
+
+    if not product_id or not action:
+        flash("無効な操作です。")
+        return redirect(url_for('main.cart'))
+
+    # セッション内のカートを取得
+    cart = session.get('cart', {})
+
+    if product_id in cart:
+        if action == "increase":
+            cart[product_id]['quantity'] += 1  # 数量を増加
+        elif action == "decrease":
+            cart[product_id]['quantity'] -= 1  # 数量を減少
+            if cart[product_id]['quantity'] <= 0:
+                del cart[product_id]  # 数量が0以下ならカートから削除
+        else:
+            flash("無効なアクションです。")
+    else:
+        flash("商品がカートに見つかりませんでした。")
+
+    # セッションにカート情報を再保存
+    session['cart'] = cart
+    return redirect(url_for('main.cart'))
 
 # ----------------------------------------------商品
 
