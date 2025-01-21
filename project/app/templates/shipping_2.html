@@ -1,0 +1,70 @@
+{% extends "layout.html" %} {% block css %}
+<link rel="stylesheet" href="../static/css/shipping.css" />
+{% endblock %}
+
+<title>{% block title %}My Site{% endblock %}</title>
+
+{% block content %}
+<div class="main">
+  <div class="mian_form">
+    <div class="shipping_address">
+      <div class="shipping_heder">
+        <h1>配送先</h1>
+        <button type="submit">編集</button>
+      </div>
+      <div class="sipping_content">
+        <h2>氏名</h2>
+        <p>ｓ水</p>
+      </div>
+      <div class="sipping_content">
+        <h2>配送先住所</h2>
+        <div class="sipping_residence">
+          <p>〒999-9999</p>
+          <p>東京都新宿区歌舞伎町9-100-1000</p>
+        </div>
+      </div>
+      <div class="sipping_content">
+        <h2>電話番号</h2>
+        <p>999-0000-0000</p>
+      </div>
+      <div class="sipping_content">
+        <h2>配送予定日</h2>
+        <p>最短(指定なし)</p>
+      </div>
+      <div class="sipping_content">
+        <h2>ご希望配送時間</h2>
+        <p>指定なし</p>
+      </div>
+      <div class="sipping_content">
+        <h2>ドライバーへの指定</h2>
+        <p>指定なし</p>
+      </div>
+    </div>
+    <div class="payment_form">
+      <div class="payment_form_heder">
+        <h1>お支払い方法の指定</h1>
+      </div>
+      <div class="payment_form_pay">
+        <div class="payment_form_pay_text">
+          <p>支払い方法</p>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="main_summary">
+    <h2>注文の概要</h2>
+    <div class="price">
+      <h3>小計</h3>
+      <p>￥10,000</p>
+    </div>
+    <div class="price">
+      <h3>配送料</h3>
+      <p>￥660</p>
+    </div>
+    <div class="price_total">
+      <h3>合計金額</h3>
+      <p>￥10,660</p>
+    </div>
+  </div>
+</div>
+{% endblock %}

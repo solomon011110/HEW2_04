@@ -19,6 +19,15 @@
         <div class="header-content">
           <span><a href="{{url_for('main.products')}}"><p>what is</p></a></span>
         </div>
+        <div class="header-content">
+          <span><a href="{{url_for('main.company')}}"><p>企業向けフォーム(仮)</p></a></span>
+        </div>
+        <div class="header-content">
+          <span><a href="{{url_for('main.shipping')}}"><p>購入手続き(仮)</p></a></span>
+        </div>
+        <div class="header-content">
+          <span><a href="{{url_for('main.cart')}}"><p>カート(仮)</p></a></span>
+        </div>
           {% if current_user.is_authenticated %}
           <div class="header-content">
             <a href="{{ url_for('main.profile') }}">プロフィール</a>
@@ -34,6 +43,7 @@
             <a href="{{ url_for('main.register') }}">新規登録</a>
           </div>
           {% endif %}
+          
       </div>
     </div>
 </header>

@@ -1,13 +1,13 @@
-<!-- <div class="start">
-  <p><img src="{{ url_for('static', filename = 'img/logo_3.png')}}" alt=""></p>
-</div> -->
-
-<div class="main-visual">
+<!-- <div class="main-visual">
   <div class="slideshow">
     <img src="{{ url_for('static', filename = 'img/sakana.jpg')}}" alt="Slideshow Image 1" class="active" />
     <img src="{{ url_for('static', filename = 'img/yasai.jpg')}}" alt="Slideshow Image 2" />
     <img src="{{ url_for('static', filename = 'img/zyamu.jpg')}}" alt="Slideshow Image 3" />
   </div>
+</div> -->
+
+<div class="top_video">
+  <video src="../static/video/top_video.mp4" autoplay muted loop></video>
 </div>
 
 {% extends "layout.html" %} {% block title %}ホーム{% endblock %}
@@ -24,6 +24,9 @@
 {% block content %}
 
 <body>
+  <!-- <div class="start">
+    <p><img src="../static/img/logo_3.png" alt=""></p>
+  </div> -->
   <main>
     <div class="item-pickup">
       <div class="item-pickup_content">
@@ -213,9 +216,9 @@
   </main>
 
   {% block script %}
-  <script src="https://code.jquery.com/jquery-3.7.0.js" integrity="sha256-JlqSTELeR4TLqP0OG9dxM7yDPqX1ox/HfgiSLBj8+kM=" crossorigin="anonymous"></script>
-  <script src="{{ url_for('static', filename='js/slide.js') }}"></script>
-  <!-- <script src="{{ url_for('static', filename='js/start.js') }}"></script> -->
+  <!-- <script src="https://code.jquery.com/jquery-3.7.1.js" integrity="sha256-eKhayi8LEQwp4NKxN+CfCh+3qOVUtJn3QNZ0TciWLP4=" crossorigin="anonymous"></script> -->
+  <!-- <script src="{{ url_for('static', filename='js/slide.js') }}"></script> -->
+  <!-- <script src="../static/js/start.js"></script> -->
   {% endblock %}
 </body>
 

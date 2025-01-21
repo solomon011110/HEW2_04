@@ -179,6 +179,18 @@ def search():
     return render_template('search.html')
 
 
+@bp.route('/company')
+def company():
+    return render_template('company.html')
+
+@bp.route('/shipping')
+def shipping():
+    return render_template('shipping.html')
+
+@bp.route('/shipping_2')
+def shipping_2():
+    return render_template('shipping_2.html')
+
 @bp.route('/products')
 def products():
     return render_template('products.html')
