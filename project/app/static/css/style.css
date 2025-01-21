@@ -966,7 +966,7 @@ text-decoration: none;
     width: 1000px;
     margin: auto;
     margin-top: 100px;
-    background-color: #fffcf8;}
+    background-color: white;}
 
 .cart h3{
     font-size: 24px;
@@ -1020,7 +1020,7 @@ text-decoration: none;
     background-color: black;
     cursor: pointer;
 }
-.cart .next p{
+.cart .next a{
     margin: auto;
     color: white;
 }
