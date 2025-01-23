@@ -21,8 +21,7 @@ def get_product_images(product_id):
     # 手動でファイル名を指定
     image_files = ["1.jpg", "2.jpg", "3.jpg"]
 
-    images = [url_for('static', filename=f"{
-                      base_path}/{file}") for file in image_files]
+    images = [url_for('static', filename=f"{base_path}/{file}") for file in image_files]
 
     return images
 
@@ -33,6 +32,7 @@ def generate_verification_code():
 
 @bp.route('/')
 def index():
+    
     return render_template('home.html')
 
 # 商品----------------------------------------------
@@ -56,7 +56,7 @@ def product():
 @bp.route('/store/<int:id>')
 def store(id):
     product = Product.query.get_or_404(id)
-    image_url = url_for('static', filename=f'img/product/{product.id}.jpg')
+    image_url = get_product_images(id)
     reviews = Review.query.filter(id == Review.product_id).all()
     return render_template('store.html', product=product, image_url=image_url, reviews=reviews)
 
