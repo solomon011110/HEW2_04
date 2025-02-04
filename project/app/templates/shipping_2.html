@@ -48,6 +48,91 @@
         <div class="payment_form_pay_text">
           <p>支払い方法</p>
         </div>
+        <div class="payment_form_pay_select">
+          <div class="payment_form_pay_select_content">
+            <div class="payment_form_pay_option" id="select_radio1_id">
+              <input type="radio" name="radio" id="select_radio1" />
+              <label for="select_radio1">登録済みのクレジットカード</label>
+            </div>
+            <div class="payment_content">
+              <div class="pay_count">
+                <label for="installments">支払い回数</label>
+                <select id="installments">
+                  <option value="1">1回払い</option>
+                  <option value="3">3回払い</option>
+                  <option value="6">6回払い</option>
+                  <option value="12">12回払い</option>
+                </select>
+              </div>
+            </div>
+          </div>
+          <div class="payment_form_pay_select_content">
+            <div class="payment_form_pay_option">
+              <input type="radio" name="radio" id="select_radio2" />
+              <label for="select_radio2">別のクレジットカード</label>
+            </div>
+            <div class="payment_content">
+              <div class="credit_card_form">
+                <div class="credit_card_form_content">
+                  <label for="card_number">カード番号</label>
+                  <input type="text" id="card_number" placeholder="1234 5678 9012 3456" maxlength="19" />
+                </div>
+
+                <div class="credit_card_form_content">
+                  <label for="card_name">名義人</label>
+                  <input type="text" id="card_name" placeholder="TARO YAMADA" />
+                </div>
+
+                <div class="credit_card_form_content">
+                  <label for="expiry_date">有効期限</label>
+                  <input type="text" id="expiry_date" placeholder="MM/YY" maxlength="5" />
+                </div>
+
+                <div class="credit_card_form_content">
+                  <label for="cvv">CVV</label>
+                  <input type="text" id="cvv" placeholder="123" maxlength="3" />
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="payment_form_pay_select_content">
+            <div class="payment_form_pay_option">
+              <input type="radio" name="radio" id="select_radio3" />
+              <label for="select_radio3">コンビニ支払い（前払い）</label>
+            </div>
+            <div class="payment_content">
+              <div class="conveni_form">
+                <label for="conveni">コンビニエンスストア</label>
+                <select id="conveni">
+                  <option value="1">ローソン</option>
+                  <option value="3">ファミリーマート</option>
+                  <option value="6">セブンイレブン</option>
+                  <option value="12">デイリーヤマザキ</option>
+                </select>
+              </div>
+            </div>
+          </div>
+
+          <div class="payment_form_pay_select_content" id="payment_form_pay_select_content_radio4">
+            <div class="payment_form_pay_option" id="select_radio4_id">
+              <input type="radio" name="radio" id="select_radio4" />
+              <label for="select_radio4">PayPay支払い</label>
+            </div>
+            <div class="payment_content">
+              <div class="payment_paypay">
+                <label for=""><a href="">PayPay支払いについてはこちらをご確認ください</a></label>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="shipping_button">
+      <div class="shipping_button_carto">
+        <a href="">カートに戻る</a>
+      </div>
+      <div class="shipping_button_payment">
+        <a href="shipping_3">確定</a>
       </div>
     </div>
   </div>
@@ -67,4 +152,32 @@
     </div>
   </div>
 </div>
+
+<script>
+  // 各支払いオプションの要素を取得
+  const options = document.querySelectorAll("input[name='radio']");
+  const paymentContents = document.querySelectorAll(".payment_content");
+
+  // 全ての支払い詳細要素を非表示にする関数
+  function hideAllPaymentContents() {
+    paymentContents.forEach((content) => {
+      content.style.display = "none";
+    });
+  }
+
+  // 初期状態ですべて非表示
+  hideAllPaymentContents();
+
+  // ラジオボタンがクリックされたときの処理
+  options.forEach((radio, index) => {
+    radio.addEventListener("change", () => {
+      // すべての支払い詳細を非表示にしてから選択されたものを表示
+      hideAllPaymentContents();
+      const selectedContent = paymentContents[index];
+      if (selectedContent) {
+        selectedContent.style.display = "block";
+      }
+    });
+  });
+</script>
 {% endblock %}

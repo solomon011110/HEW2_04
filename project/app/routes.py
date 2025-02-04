@@ -191,6 +191,14 @@ def shipping():
 def shipping_2():
     return render_template('shipping_2.html')
 
+@bp.route('/shipping_3')
+def shipping_3():
+    return render_template('shipping_3.html')
+
+@bp.route('/shipping_4')
+def shipping_4():
+    return render_template('shipping_4.html')
+
 @bp.route('/products')
 def products():
     return render_template('products.html')

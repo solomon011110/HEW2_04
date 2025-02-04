@@ -1,0 +1,45 @@
+{% extends "layout.html" %} {% block css %}
+<link rel="stylesheet" href="../static/css/shipping.css" />
+{% endblock %}
+
+<title>{% block title %}My Site{% endblock %}</title>
+
+{% block content %}
+<div class="main">
+  <div class="shipping_confirmed">
+    <h1>購入完了しました</h1>
+    <h2>受付番号：</h2>
+    <div class="return">
+      <a href="/">トップページに戻る</a>
+    </div>
+  </div>
+</div> 
+
+<script>
+  // 各支払いオプションの要素を取得
+  const options = document.querySelectorAll("input[name='radio']");
+  const paymentContents = document.querySelectorAll(".payment_content");
+
+  // 全ての支払い詳細要素を非表示にする関数
+  function hideAllPaymentContents() {
+    paymentContents.forEach((content) => {
+      content.style.display = "none";
+    });
+  }
+
+  // 初期状態ですべて非表示
+  hideAllPaymentContents();
+
+  // ラジオボタンがクリックされたときの処理
+  options.forEach((radio, index) => {
+    radio.addEventListener("change", () => {
+      // すべての支払い詳細を非表示にしてから選択されたものを表示
+      hideAllPaymentContents();
+      const selectedContent = paymentContents[index];
+      if (selectedContent) {
+        selectedContent.style.display = "block";
+      }
+    });
+  });
+</script>
+{% endblock %}
