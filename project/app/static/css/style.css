@@ -781,6 +781,10 @@ text-decoration: none;
     font-size: 14px;
     margin: 0 0 0 6px
 }
+.product input{
+  width: 40px;
+  border: none;
+}
 .product button{
     margin: 12px 0 0 0;
     width: 500px;
@@ -965,22 +969,24 @@ text-decoration: none;
 .cart{
     width: 1000px;
     margin: auto;
-    margin-top: 100px;
     background-color: white;}
 
 .cart h3{
     font-size: 24px;
-    margin-top: 36px;
+    margin-top: 12px;
 }
 
 .cart img{
     width:96px;
+    height: 96px;
     border-radius: 5px;
+    object-fit: cover;
 }
 .cart .item-box{
     width: 650px;
+    margin-bottom: 100px;
 }
-.cart .item{
+.cart .cart-item{
     padding: 20px 38px;
 }
 .cart .text-box{
@@ -1022,4 +1028,16 @@ text-decoration: none;
 .cart .next a{
     margin: auto;
     color: white;
+}
+.cart .count .btn{
+  border: none;
+  background-color: white;
+  cursor: pointer;
+}
+.cart .count .deletebtn{
+  color: #2162a1;
+  margin: 0;
+}
+.cart .count .deletebtn:hover{
+  border-bottom: 1px solid;
 }

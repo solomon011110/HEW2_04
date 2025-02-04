@@ -33,7 +33,6 @@
             </div>
             <h4>\{{ product.sale_price }} <span class="tax">税込</span></h4>
             <form action="{{ url_for('main.add_to_cart', product_id=product.id) }}" method="POST">
-                <input type="number" name="quantity" value="1" min="1" required>
                 <button type="submit" class="btn">🛒 カートに追加</button>
             </form>
             <div class="explanation">
