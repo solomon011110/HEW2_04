@@ -605,18 +605,18 @@ text-decoration: none;
   font-size: 12px;
   margin: 0 0 0 6px
 }
-.item .cart{
+.item .cartbtn{
   margin: 12px 0 0 0;
   height: 52px;
   align-items: center;
   border: black 1px solid;
   border-radius: 5px;
 }
-.item .cart:hover{
+.item .cartbtn:hover{
   background-color: #e9e9df;
   transition: 0.2s;
 }
-.item .cart p{
+.item .cartbtn p{
   margin: auto;
 }
 .item .sort{
