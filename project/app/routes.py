@@ -360,25 +360,22 @@ def register():
         password = generate_password_hash(
             request.form['password'], method='pbkdf2:sha256')
         phon = request.form['phon']
-        # name = request.form['name'].replace(' ', '').replace('　', '')
-        # post = request.form['post'].replace(' ', '').replace('　', '')
-        # prefecture = request.form['prefecture'].replace(
-        #     ' ', '').replace('　', '')
-        # siku = request.form['siku'].replace(' ', '').replace('　', '')
-        # tyo = request.form['tyo'].replace(' ', '').replace('　', '')
-        # ban = request.form['ban'].replace(' ', '').replace('　', '')
+        post = request.form['post'].replace(' ', '').replace('　', '')
+        prefecture = request.form['prefecture'].replace(' ', '').replace('　', '')
+        siku = request.form['siku'].replace(' ', '').replace('　', '')
+        tyo = request.form['tyo'].replace(' ', '').replace('　', '')
+        ban = request.form['ban'].replace(' ', '').replace('　', '')
         verification_code = generate_verification_code()
 
         session['verification_code'] = verification_code
         session['email'] = email
         session['password'] = password
         session['phon'] = phon
-        # session['name'] = name
-        # session['post'] = post
-        # session['prefecture'] = prefecture
-        # session['siku'] = siku
-        # session['tyo'] = tyo
-        # session['ban'] = ban
+        session['post'] = post
+        session['prefecture'] = prefecture
+        session['siku'] = siku
+        session['tyo'] = tyo
+        session['ban'] = ban
         # 認証コードをメールで送信
         msg = Message('Your Verification Code',
                       sender='hewgroup040@gmail.com', recipients=[email])
