@@ -40,23 +40,19 @@
         <button type="submit">削除</button>
       </form>
     </div>
-  
-    <div class="caption">
-      <div class="flex-box">
-        <h3>お支払い方法</h3>
-        <a href="/payment/edit" class="edit">編集する</a>
-      </div>
-    </div>
-    <div class="content">
-      {% if payment_methods %}
-      <div class="flex-box">
-        <p class="flame">ご登録のクレジットカード</p>
-        <div>
-          {% for card in payment_methods %}
-          <p class="userinfo">
-            {{ card.brand }} ****{{ card.last4 }} {{ card.expiry }}
-          </p>
-          {% endfor %}
+  </div>
+  {% if sales %}
+  <div class="history">
+    {% for sale in sales %}
+    <a href="/store/{{ sale.product_id }}">
+      <div class="history-content border">
+        <img
+          src="{{ url_for('static', filename='img/products/' + sale.product.id|string + '/main.jpg') }}"
+          alt="{{ sale.product.name }}"
+        />
+        <div class="text-box">
+          <p class="name">{{ sale.product.name }}</p>
+          <p class="date">{{ sale.sale_date.strftime('%Y/%m/%d') }}</p>
         </div>
       </div>
       {% else %}
