@@ -72,10 +72,10 @@
   {% if sales %}
   <div class="history">
     {% for sale in sales %}
-    <a href="/product/{{ sale.product_id }}">
+    <a href="/store/{{ sale.product_id }}">
       <div class="history-content border">
         <img
-          src="static/img/product/{{ sale.product_id }}.jpg"
+          src="{{ url_for('static', filename='img/products/' + sale.product.id|string + '/main.jpg') }}"
           alt="{{ sale.product.name }}"
         />
         <div class="text-box">
