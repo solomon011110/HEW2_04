@@ -616,24 +616,6 @@ text-decoration: none;
   height: 100%;
   border-radius: 10px;
 }
-
-.item .image-box:hover img:first-child {
-  opacity: 0;
-  transition: 0.8s;
-}
-
-.item .image-box img:last-child {
-  opacity: 0;
-}
-
-.item .image-box:hover img:first-child {
-  opacity: 0;
-}
-
-.item .image-box:hover img:last-child {
-  opacity: 1;
-  transition: 0.5s;
-}
 .item .text-box{
   margin: 8px 0 0;
 }
