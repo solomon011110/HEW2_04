@@ -955,6 +955,21 @@ text-decoration: none;
 .product .comment .review-box-box{
     margin: 12px 0 0 0;
 }
+.product .stars {
+  display: flex;
+  gap: 0.5rem;
+}
+.product .star {
+  font-size: 2rem;
+  cursor: pointer;
+  color: #ccc;
+}
+.product .star.selected {
+  color: black;
+}
+.product .bold{
+  font-weight: bold;
+}
 /* ロゴ */
 /* .start {
   background: #000000;
