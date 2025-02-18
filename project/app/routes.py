@@ -68,7 +68,6 @@ def store(id):
 @bp.route('/store/<int:product_id>/review', methods=['POST'])
 @login_required
 def add_review(product_id):
-    if(title and describe and star):
         title = request.form.get("title")
         describe = request.form.get("describe")
         star = max(min(request.form.get("star"),5),0)
@@ -85,7 +84,7 @@ def add_review(product_id):
         db.session.add(new_Review)
         db.session.commit()
 
-    return redirect(url_for('main.store', id=product_id))
+        return redirect(url_for('main.store', id=product_id))
 
 
 @bp.route('/search', methods=['GET', 'POST'])
