@@ -492,12 +492,11 @@ footer .footer_menu ul li a:hover{
 footer .small{
   text-align: center;
 }
-
 .profile .flex-box{
-	display: flex;
+  display: flex;
 }
 .profile a{
-	text-decoration: none;
+  text-decoration: none;
     color: black;
 }
 
@@ -687,10 +686,10 @@ text-decoration: none;
 
 
 .product .flex-box{
-	display: flex;
+  display: flex;
 }
 .product a{
-	text-decoration: none;
+  text-decoration: none;
     color: black;
 }
 
@@ -958,13 +957,13 @@ text-decoration: none;
 }
 /* ロゴ */
 /* .start {
-	background: #000000;
-	position: fixed;
-	top: 0;
-	left: 0;
-	height: 100%;
-	width: 100%;
-	z-index: 9000;
+  background: #000000;
+  position: fixed;
+  top: 0;
+  left: 0;
+  height: 100%;
+  width: 100%;
+  z-index: 9000;
 }
 
 .start.is-active{
@@ -974,22 +973,21 @@ text-decoration: none;
 
 .start p {
   filter: invert(100%);
-	position: fixed;
-	left: 45%;
-	top: 40%;
-	transform: translate(-50%, -50%);
-	display: none;
-	z-index: 9999;
-	width: 300px;
+  position: fixed;
+  left: 45%;
+  top: 40%;
+  transform: translate(-50%, -50%);
+  display: none;
+  z-index: 9999;
+  width: 300px;
 } */
 
 
-
 .cart .flex-box{
-	display: flex;
+  display: flex;
 }
 .cart a{
-	text-decoration: none;
+  text-decoration: none;
     color: black;
 }
 
