@@ -68,21 +68,22 @@ def store(id):
 @bp.route('/store/<int:product_id>/review', methods=['POST'])
 @login_required
 def add_review(product_id):
-    title = request.form.get("title")  # カートに追加する数量を取得
-    describe = request.form.get("describe")
-    star = request.form.get("star")
-    name = session.get('name')
-    product_id_str = str(product_id)  # 商品IDを文字列として統一
+    if(title and describe and star):
+        title = request.form.get("title")
+        describe = request.form.get("describe")
+        star = max(min(request.form.get("star"),5),0)
+        name = session.get('name')
+        product_id_str = str(product_id)  # 商品IDを文字列として統一
 
-    new_Review = Review(
-        product_id=product_id_str,
-        title=title,
-        star=star,
-        describe=describe,
-        name=name
-    )
-    db.session.add(new_Review)
-    db.session.commit()
+        new_Review = Review(
+            product_id=product_id_str,
+            title=title,
+            star=star,
+            describe=describe,
+            name=name
+        )
+        db.session.add(new_Review)
+        db.session.commit()
 
     return redirect(url_for('main.store', id=product_id))
 
