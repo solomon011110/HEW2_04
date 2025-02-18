@@ -59,7 +59,7 @@ def store(id):
     image_url = get_product_images(id)
     reviews = Review.query.filter(id == Review.product_id).all()
     review_avg_star = [review.star for review in reviews]
-    review_avg_star = sum(review_avg_star)/len(review_avg_star)
+    review_avg_star = sum(review_avg_star)/len(review_avg_star) if (review_avg_star == 0) else 0
     int_review_avg_star = int(round(review_avg_star, 0))
     sum_review = len(reviews)
     return render_template('store.html', product=product, image_url=image_url, reviews=reviews, review_avg_star=review_avg_star, int_review_avg_star=int_review_avg_star, sum_review=sum_review)
