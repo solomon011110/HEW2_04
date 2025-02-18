@@ -28,7 +28,7 @@ class Product(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(50), nullable=False)
     category = db.Column(db.String(50), nullable=True)
-    defect_reason = db.Column(db.String(100))
+    defect_reason = db.Column(db.String(1000))
     purchase_price = db.Column(db.Float, nullable=True)
     sale_price = db.Column(db.Float, nullable=True)
     status = db.Column(db.Enum("available", "not_available",
