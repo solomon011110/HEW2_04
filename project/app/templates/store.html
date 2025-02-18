@@ -139,13 +139,13 @@
     <div>
       <form action="{{ url_for('main.add_review', product_id=product.id) }}" method="post">
         <p class="bold">レビューを書く</p>
-        <div class="stars" id="starRating" aria-label="星評価">
-          <span class="star" data-value="1" role="button" aria-label="1星">★</span>
-          <span class="star" data-value="2" role="button" aria-label="2星">★</span>
-          <span class="star" data-value="3" role="button" aria-label="3星">★</span>
-          <span class="star" data-value="4" role="button" aria-label="4星">★</span>
-          <span class="star" data-value="5" role="button" aria-label="5星">★</span>
-      </div>
+        <div class="stars" id="starRating" name="star">
+          <span class="star" data-value="1" role="button">★</span>
+          <span class="star" data-value="2" role="button">★</span>
+          <span class="star" data-value="3" role="button">★</span>
+          <span class="star" data-value="4" role="button">★</span>
+          <span class="star" data-value="5" role="button">★</span>
+        </div>
         <label>タイトル<input type="text" name="title"></label>
         <label>本文<input type="text" name="describe"></label>
         <div id="error" class="error" style="display: none;">すべて入力してください。</div>
@@ -244,6 +244,7 @@
         if (e.target.classList.contains("star")) {
             const stars = starRating.querySelectorAll(".star");
             selectedRating = parseInt(e.target.getAttribute("data-value"), 10);
+            starRating.value = selectedRating
 
             stars.forEach(star => {
                 star.classList.remove("selected");
