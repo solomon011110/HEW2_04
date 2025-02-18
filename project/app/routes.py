@@ -71,7 +71,7 @@ def add_review(product_id):
     if(title and describe and star):
         title = request.form.get("title")
         describe = request.form.get("describe")
-        star = request.form.get("star")
+        star = min(request.form.get("star"),5)
         name = session.get('name')
         product_id_str = str(product_id)  # 商品IDを文字列として統一
 
