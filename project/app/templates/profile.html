@@ -40,8 +40,7 @@
         <button type="submit">削除</button>
       </form>
     </div>
-  </div>
-  {% if sales %}
+    {% if sales %}
   <div class="history">
     {% for sale in sales %}
     <a href="/store/{{ sale.product_id }}">
@@ -55,6 +54,7 @@
           <p class="date">{{ sale.sale_date.strftime('%Y/%m/%d') }}</p>
         </div>
       </div>
+      {% endfor %}
       {% else %}
       <p>登録されたお支払い方法はありません。</p>
       {% endif %}
@@ -72,7 +72,7 @@
       <a href="/product/{{ sale.product_id }}">
         <div class="history-content border">
           <img
-            src="static/img/product/{{ sale.product_id }}.jpg"
+            src="static/img/store/{{ sale.product_id }}.jpg"
             alt="{{ sale.product.name }}"
           />
           <div class="text-box">
@@ -87,5 +87,7 @@
     <p>このユーザーはまだ購入していません。</p>
     {% endif %}
   </div>
+  </div>
+  
 </body>
 {% endblock %}
