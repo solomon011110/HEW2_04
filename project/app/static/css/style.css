@@ -437,7 +437,6 @@ footer .footer_sns p{
 }
 
 footer .footer_sns ul{
-  margin-left: 10px;
   padding: 0;
   justify-content: center;
   display: flex;
@@ -492,12 +491,11 @@ footer .footer_menu ul li a:hover{
 footer .small{
   text-align: center;
 }
-
 .profile .flex-box{
-	display: flex;
+  display: flex;
 }
 .profile a{
-	text-decoration: none;
+  text-decoration: none;
     color: black;
 }
 
@@ -616,24 +614,6 @@ text-decoration: none;
   height: 100%;
   border-radius: 10px;
 }
-
-.item .image-box:hover img:first-child {
-  opacity: 0;
-  transition: 0.8s;
-}
-
-.item .image-box img:last-child {
-  opacity: 0;
-}
-
-.item .image-box:hover img:first-child {
-  opacity: 0;
-}
-
-.item .image-box:hover img:last-child {
-  opacity: 1;
-  transition: 0.5s;
-}
 .item .text-box{
   margin: 8px 0 0;
 }
@@ -705,10 +685,10 @@ text-decoration: none;
 
 
 .product .flex-box{
-	display: flex;
+  display: flex;
 }
 .product a{
-	text-decoration: none;
+  text-decoration: none;
     color: black;
 }
 
@@ -974,15 +954,30 @@ text-decoration: none;
 .product .comment .review-box-box{
     margin: 12px 0 0 0;
 }
+.product .stars {
+  display: flex;
+  gap: 0.5rem;
+}
+.product .star {
+  font-size: 2rem;
+  cursor: pointer;
+  color: #ccc;
+}
+.product .star.selected {
+  color: black;
+}
+.product .bold{
+  font-weight: bold;
+}
 /* ロゴ */
 /* .start {
-	background: #000000;
-	position: fixed;
-	top: 0;
-	left: 0;
-	height: 100%;
-	width: 100%;
-	z-index: 9000;
+  background: #000000;
+  position: fixed;
+  top: 0;
+  left: 0;
+  height: 100%;
+  width: 100%;
+  z-index: 9000;
 }
 
 .start.is-active{
@@ -992,22 +987,21 @@ text-decoration: none;
 
 .start p {
   filter: invert(100%);
-	position: fixed;
-	left: 45%;
-	top: 40%;
-	transform: translate(-50%, -50%);
-	display: none;
-	z-index: 9999;
-	width: 300px;
+  position: fixed;
+  left: 45%;
+  top: 40%;
+  transform: translate(-50%, -50%);
+  display: none;
+  z-index: 9999;
+  width: 300px;
 } */
 
 
-
 .cart .flex-box{
-	display: flex;
+  display: flex;
 }
 .cart a{
-	text-decoration: none;
+  text-decoration: none;
     color: black;
 }
 

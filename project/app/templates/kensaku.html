@@ -39,7 +39,7 @@
     <div class="border"></div>
     <div class="content">
         {% for product in products %}
-        <a href="#" class="item-box {% if loop.index > 4 %}hidden{% endif %}">
+        <a href="store/{{product.id}}" class="item-box">
             <div class="image-box">
                 <img src="{{ url_for('static', filename='img/products/' + product.id|string + '/main.jpg') }}" alt="{{ product.name }}">
             </div>
