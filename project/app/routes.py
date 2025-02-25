@@ -167,8 +167,8 @@ def pop_from_cart():
 
 
 @bp.route('/kounyu', methods=['GET', 'POST'])
+@login_required
 def kounyu():
-    # セッションからカートを取得
     cart = session.get('cart', {})
     total_price = sum(float(item['price']) * item['quantity']
                       for item in cart.values())
