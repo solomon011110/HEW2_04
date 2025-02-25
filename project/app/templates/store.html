@@ -46,7 +46,7 @@
     <div>
       <form action="{{ url_for('main.add_review', product_id=product.id) }}" method="post">
         <p class="bold">レビューを書く</p>
-        <div class="stars" id="starRating" name="star">
+        <div class="stars" id="starRating">
           <span class="star" data-value="1" role="button">★</span>
           <span class="star" data-value="2" role="button">★</span>
           <span class="star" data-value="3" role="button">★</span>
@@ -56,6 +56,7 @@
         <label>タイトル<input type="text" name="title"></label>
         <label>本文<input type="text" name="describe"></label>
         <div id="error" class="error" style="display: none;">すべて入力してください。</div>
+        <input type="hidden" name="rate" id="ratel">
         <input type="submit" value="送信">
       </form>
     </div>
@@ -85,6 +86,7 @@
   const slides = document.querySelectorAll('.slide > div');
   const totalSlides = slides.length;
   const slideWidth = 100 / totalSlides;
+  const star = document.getElementById("ratel");
   slideContainer.style.width = `${totalSlides * 100}%`;
   slides.forEach((slide) => {
     slide.style.width = `${slideWidth}%`;
@@ -152,6 +154,9 @@
             const stars = starRating.querySelectorAll(".star");
             selectedRating = parseInt(e.target.getAttribute("data-value"), 10);
             starRating.value = selectedRating
+          star.value = selectedRating
+          console.log(selectedRating)
+          console.log(star)
 
             stars.forEach(star => {
                 star.classList.remove("selected");
