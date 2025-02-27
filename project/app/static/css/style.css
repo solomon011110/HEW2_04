@@ -800,7 +800,7 @@ text-decoration: none;
 .product .review{
     align-items: center;
 }
-.product .star{
+.product .review-star{
     font-size: 22px;
 }
 .product .review .howmanyreviews{
@@ -969,6 +969,16 @@ text-decoration: none;
 }
 .product .bold{
   font-weight: bold;
+}
+.product .review-title{
+  width: 200px;
+  border-bottom: #000 1px solid;
+}
+.product .review-body{
+  width: 230px;
+  height: 50px;
+  border: #000 1px solid;
+  margin: 0 0 20px;
 }
 /* ロゴ */
 /* .start {

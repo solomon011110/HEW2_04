@@ -70,7 +70,7 @@ def store(id):
 def add_review(product_id):
         title = request.form.get("title")
         describe = request.form.get("describe")
-        star = max(min(request.form.get("star"),5),0)
+        star = max(min(int(request.form.get("star")),5),0)
         name = session.get('name')
         product_id_str = str(product_id)  # 商品IDを文字列として統一
 

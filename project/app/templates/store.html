@@ -26,7 +26,7 @@
         <div class="text-box">
             <h3>{{ product.name }}</h3>
             <div class="review flex-box">
-                <div class="star">
+                <div class="review-star">
                     <p>{{review_avg_star}} {{"★"*int_review_avg_star}}{{"☆"*(5-int_review_avg_star)}}</p>
                 </div>
                 <p class="howmanyreviews">{{sum_review}}件</p>
@@ -120,15 +120,16 @@
     <div>
       <form action="{{ url_for('main.add_review', product_id=product.id) }}" method="post">
         <p class="bold">レビューを書く</p>
-        <div class="stars" id="starRating" name="star">
+        <div class="stars" id="starRating">
+          <input type="hidden" id="starRatingValue" name="star" value="0">
           <span class="star" data-value="1" role="button">★</span>
           <span class="star" data-value="2" role="button">★</span>
           <span class="star" data-value="3" role="button">★</span>
           <span class="star" data-value="4" role="button">★</span>
           <span class="star" data-value="5" role="button">★</span>
         </div>
-        <label>タイトル<input type="text" name="title"></label>
-        <label>本文<input type="text" name="describe"></label>
+        <label>タイトル:<input type="text" name="title" placeholder="タイトルを入力" class="review-title"></label><br>
+        <label>本文:<input type="text" name="describe" placeholder="本文を入力" class="review-body"></label><br>
         <div id="error" class="error" style="display: none;">すべて入力してください。</div>
         <input type="submit" value="送信">
       </form>
@@ -218,6 +219,7 @@
     const reviewsContainer = document.getElementById("reviews");
     const starRating = document.getElementById("starRating");
     const errorMessage = document.getElementById("error");
+    const starRatingValue = document.getElementById("starRatingValue")
     let selectedRating = 0;
 
     // 星評価の選択機能
@@ -225,7 +227,7 @@
         if (e.target.classList.contains("star")) {
             const stars = starRating.querySelectorAll(".star");
             selectedRating = parseInt(e.target.getAttribute("data-value"), 10);
-            starRating.value = selectedRating
+            starRatingValue.value = selectedRating
 
             stars.forEach(star => {
                 star.classList.remove("selected");
