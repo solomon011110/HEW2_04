@@ -59,7 +59,7 @@ def store(id):
     image_url = get_product_images(id)
     reviews = Review.query.filter(id == Review.product_id).all()
     review_avg_star = [review.star for review in reviews]
-    review_avg_star = sum(review_avg_star)/len(review_avg_star) if (reviews) else 0
+    review_avg_star = round(sum(review_avg_star)/len(review_avg_star), 1) if (reviews) else 0
     int_review_avg_star = int(round(review_avg_star, 0))
     sum_review = len(reviews)
     return render_template('store.html', product=product, image_url=image_url, reviews=reviews, review_avg_star=review_avg_star, int_review_avg_star=int_review_avg_star, sum_review=sum_review)
@@ -70,7 +70,7 @@ def store(id):
 def add_review(product_id):
         title = request.form.get("title")
         describe = request.form.get("describe")
-        star = max(min(int(request.form.get("star")),5),0)
+        star = int(request.form.get("rate"))
         name = session.get('name')
         product_id_str = str(product_id)  # 商品IDを文字列として統一
 
@@ -167,8 +167,8 @@ def pop_from_cart():
 
 
 @bp.route('/kounyu', methods=['GET', 'POST'])
+@login_required
 def kounyu():
-    # セッションからカートを取得
     cart = session.get('cart', {})
     total_price = sum(float(item['price']) * item['quantity']
                       for item in cart.values())

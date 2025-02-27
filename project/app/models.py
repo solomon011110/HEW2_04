@@ -98,9 +98,9 @@ class Review(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     product_id = db.Column(db.Integer, db.ForeignKey('products.id'), nullable=False)
     name = db.Column(db.String(50))
-    star = db.Column(db.Integer)
+    star = db.Column(db.Integer, nullable=False)
     title = db.Column(db.String(100))
-    describe = db.Column(db.Text)
+    describe = db.Column(db.Text, nullable=False)
     review_date = db.Column(db.DateTime, default=datetime.now())
 
 class Fcat(db.Model):
